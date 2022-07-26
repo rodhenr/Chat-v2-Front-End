@@ -67,13 +67,8 @@
 }
 
 .loginTitle {
-  display: none;
-
-  @media (min-width: 900px) {
-    color: #2bae66;
-    display: block;
-    margin: 0 0 2rem;
-  }
+  color: #2bae66;
+  margin: 0 0 1rem;
 }
 
 .errorMessage {

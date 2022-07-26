@@ -54,7 +54,7 @@ function Register() {
       </div>
       <div className={styles.register}>
         <p className={styles.errorMessage}>{error}</p>
-        <h1 className={styles.registerTitle}>Registro</h1>
+        <h1 className={styles.registerTitle}>REGISTRO</h1>
         <div className={styles.form}>
           <RegisterInputs />
           <div className={styles.buttonRegister}>
