@@ -76,6 +76,12 @@
   }
 }
 
+.errorMessage {
+  align-self: center;
+  font-size: 1.2rem;
+  color: red;
+}
+
 .form {
   display: flex;
   flex-direction: column;

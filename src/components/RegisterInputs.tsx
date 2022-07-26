@@ -1,12 +1,17 @@
-import { setData } from "../features/auth/registerSlice";
+import { setData, setError } from "../features/auth/registerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 
 function RegisterInputs() {
   const data = useSelector((state: RootState) => state.register.data);
+  const error = useSelector((state: RootState) => state.register.errMsg);
   const dispatch = useDispatch();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (error) {
+      dispatch(setError(""));
+    }
+
     dispatch(setData({ ...data, [e.target.name]: e.target.value }));
   };
 

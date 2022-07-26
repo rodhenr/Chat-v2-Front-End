@@ -1,14 +1,18 @@
-import { useState } from "react";
-
+import { loginData, loginError } from "../features/auth/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
 function LoginInputs() {
-  const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
+  const data = useSelector((state: RootState) => state.login.login);
+  const error = useSelector((state: RootState) => state.login.errorMsg);
+  const dispatch = useDispatch();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setLoginInfo((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    if (error) {
+      dispatch(loginError(""));
+    }
+
+    dispatch(loginData({ ...data, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -18,14 +22,14 @@ function LoginInputs() {
         onChange={handleInput}
         placeholder="E-mail"
         type="email"
-        value={loginInfo.email}
+        value={data.email}
       />
       <input
         name="password"
         onChange={handleInput}
         placeholder="Senha"
         type="password"
-        value={loginInfo.password}
+        value={data.password}
       />
     </>
   );

@@ -18,6 +18,7 @@ const registerSlice = createSlice({
       password: "",
       confirmPassword: "",
     },
+    errMsg: "",
   },
   reducers: {
     setData: (state, action: PayloadAction<Data>) => {
@@ -25,9 +26,14 @@ const registerSlice = createSlice({
 
       state.data = newData;
     },
+    setError: (state, action) => {
+      const newError = action.payload;
+
+      state.errMsg = newError;
+    },
   },
 });
 
-export const { setData } = registerSlice.actions;
+export const { setData, setError } = registerSlice.actions;
 
 export default registerSlice.reducer;

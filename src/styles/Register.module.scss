@@ -67,13 +67,14 @@
 }
 
 .registerTitle {
-  display: none;
+  color: #2bae66;
+  margin: 0 0 1rem;
+}
 
-  @media (min-width: 900px) {
-    color: #2bae66;
-    display: block;
-    margin: 0 0 2rem;
-  }
+.errorMessage {
+  align-self: center;
+  font-size: 1.2rem;
+  color: red;
 }
 
 .form {
