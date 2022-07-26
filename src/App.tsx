@@ -1,11 +1,11 @@
 import "./App.css";
 import styles from "./styles/App.module.scss";
-import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <div className={styles.container}>
-      <Login />
+      <Register />
     </div>
   );
 }
