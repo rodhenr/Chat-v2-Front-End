@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 function LoginInputs() {
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
 

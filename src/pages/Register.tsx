@@ -1,12 +1,47 @@
 import { useNavigate } from "react-router";
+
+import { useRegisterMutation } from "../features/auth/authApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { setData } from "../features/auth/registerSlice";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+
 import RegisterInputs from "../components/RegisterInputs";
 
 import styles from "../styles/Register.module.scss";
 
+interface ErrorType {
+  data: {
+    error: string;
+  };
+  status: number;
+}
+
 function Register() {
+  const data = useSelector((state: RootState) => state.register.data);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [register] = useRegisterMutation();
+
+  const handleRegister = async () => {
+    try {
+      await register(data).unwrap(); // Somente captura erros se usar unwrap
+      dispatch(
+        setData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        })
+      );
+    } catch (err) {
+      const error = err as ErrorType; // Necessário criar uma interface para lidar com o erro
+      console.log(error?.data?.error);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -20,7 +55,7 @@ function Register() {
         <div className={styles.form}>
           <RegisterInputs />
           <div className={styles.buttonRegister}>
-            <button>REGISTRAR</button>
+            <button onClick={() => handleRegister()}>REGISTRAR</button>
           </div>
         </div>
         <p className={styles.login}>
