@@ -12,13 +12,14 @@ function Login() {
         </h2>
       </div>
       <div className={styles.login}>
+        <h1 className={styles.loginTitle}>LOGIN</h1>
         <div className={styles.form}>
           <input type="text" placeholder="Usário" />
           <input type="password" placeholder="Senha" />
-        </div>
-        <p className={styles.forgotPassword}>Esqueceu sua senha?</p>
-        <div className={styles.buttonLogin}>
-          <FontAwesomeIcon icon={faArrowRight} />
+          <p className={styles.forgotPassword}>Esqueceu sua senha?</p>
+          <div className={styles.buttonLogin}>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </div>
         </div>
         <p className={styles.register}>
           Não tem uma conta? <span>Registre-se!</span>
