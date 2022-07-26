@@ -3,6 +3,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  font-family: "Roboto Condensed", sans-serif;
   gap: 7rem;
   min-height: 100vh;
 
@@ -20,6 +21,7 @@
   color: #fff;
   display: flex;
   flex-direction: column;
+  font-family: "Jura", sans-serif;
   padding: 2rem 0;
   width: 100%;
 
@@ -77,28 +79,20 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 
   input {
     border: none;
     border-bottom: 2px solid #2bae66;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
     width: 300px;
+
+    &:last-of-type {
+      margin-bottom: 0.6rem;
+    }
 
     &:focus {
       outline: none;
-    }
-  }
-
-  @media (min-width: 900px) {
-    gap: 0;
-
-    input {
-      margin-bottom: 1.5rem;
-
-      &:last-of-type {
-        margin-bottom: 0.6rem;
-      }
     }
   }
 }
@@ -123,6 +117,7 @@
 
 .login {
   align-self: center;
+  font-size: 1.2rem;
   margin: 4rem 0;
 
   span {

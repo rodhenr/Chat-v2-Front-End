@@ -1,8 +1,13 @@
-import styles from "../styles/Register.module.scss";
+import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import RegisterInputs from "../components/RegisterInputs";
+
+import styles from "../styles/Register.module.scss";
 
 function Register() {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
@@ -13,16 +18,14 @@ function Register() {
       </div>
       <div className={styles.register}>
         <div className={styles.form}>
-          <input type="text" placeholder="Usário" />
-          <input type="email" placeholder="E-Mail" />
-          <input type="password" placeholder="Senha" />
-          <input type="password" placeholder="Repira a senha" />
+          <RegisterInputs />
           <div className={styles.buttonRegister}>
             <button>REGISTRAR</button>
           </div>
         </div>
         <p className={styles.login}>
-          Já tem uma conta? <span>Faça Login!</span>
+          Já tem uma conta?{" "}
+          <span onClick={() => navigate("/")}>Faça Login!</span>
         </p>
       </div>
     </div>
