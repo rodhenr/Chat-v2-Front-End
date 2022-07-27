@@ -25,6 +25,7 @@ function LoginInputs() {
         value={data.email}
       />
       <input
+        minLength={6}
         name="password"
         onChange={handleInput}
         placeholder="Senha"

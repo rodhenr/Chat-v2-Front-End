@@ -27,6 +27,11 @@ function Register() {
   const [register] = useRegisterMutation();
 
   const handleRegister = async () => {
+    if (data.password !== data.confirmPassword) {
+      dispatch(setError("As senhas devem ser iguais!"));
+      return;
+    }
+    
     try {
       await register(data).unwrap(); // Somente captura erros se usar unwrap
       dispatch(

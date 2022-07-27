@@ -18,6 +18,7 @@ function RegisterInputs() {
   return (
     <>
       <input
+        minLength={3}
         name="firstName"
         onChange={handleInput}
         placeholder="Nome"
@@ -25,6 +26,7 @@ function RegisterInputs() {
         value={data.firstName}
       />
       <input
+        minLength={3}
         name="lastName"
         onChange={handleInput}
         placeholder="Sobrenome"
@@ -39,6 +41,7 @@ function RegisterInputs() {
         value={data.email}
       />
       <input
+        minLength={6}
         name="password"
         onChange={handleInput}
         placeholder="Senha"
@@ -46,6 +49,7 @@ function RegisterInputs() {
         value={data.password}
       />
       <input
+        minLength={6}
         name="confirmPassword"
         onChange={handleInput}
         placeholder="Repita a senha"

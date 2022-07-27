@@ -14,7 +14,7 @@ import styles from "../styles/Login.module.scss";
 
 interface ErrorType {
   data: {
-    error: string;
+    error: string | string[];
   };
   status: number;
 }
@@ -41,7 +41,17 @@ function Login() {
       navigate("/?");
     } catch (err) {
       const error = err as ErrorType; // Necessário criar uma interface para lidar com o erro
-      dispatch(loginError(error.data.error));
+
+      console.log(error);
+      if (!error?.status) {
+        dispatch(loginError("Sem resposta do servidor"));
+      } else if (error?.status === 400) {
+        dispatch(loginError(error.data.error[0]));
+      } else if (error?.status === 401) {
+        dispatch(loginError("E-mail e/ou senha incorreto(s)!"));
+      } else {
+        dispatch(loginError("Falha no login!"));
+      }
     }
   };
 
