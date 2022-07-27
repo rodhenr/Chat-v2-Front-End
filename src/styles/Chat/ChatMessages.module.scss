@@ -1,0 +1,45 @@
+.messages {
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1rem;
+  }
+  
+  .singleMessage {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 220px;
+    padding: 0.7rem;
+    width: fit-content;
+  
+    p {
+      margin: 0;
+    }
+  }
+  
+  .myMessage {
+    background-color: #fff;
+    border-radius: 10px 10px 10px 0;
+  }
+  
+  .userMessage {
+    align-self: flex-end;
+    background-color: #595454;
+    border-radius: 10px 10px 0 10px;
+    color: #fff;
+  
+    p {
+      &:last-of-type {
+        align-self: flex-end;
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+  
+  .messageHour {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.8rem;
+    margin: 0;
+  }

@@ -1,10 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Auth from "./layout/Auth";
-import Chat from "./pages/Chat";
-import Chatting from './components/Chatting'
+
 import HasToken from "./layout/HasToken";
+import Auth from "./layout/Auth";
+
+import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
+import Chatting from "./components/Chat/ChatPage";
 
 function App() {
   return (

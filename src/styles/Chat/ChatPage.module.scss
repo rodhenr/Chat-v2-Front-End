@@ -1,0 +1,20 @@
+.container {
+  background-color: #edf6f9;
+  box-sizing: border-box;
+  display: grid;
+  font-family: "Roboto Condensed", sans-serif;
+  grid-template-rows: 0.1fr 1fr 0.1fr;
+  height: 100vh;
+}
+
+.info {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+
+  svg {
+    color: #2bae66;
+    font-size: 1.4rem;
+  }
+}

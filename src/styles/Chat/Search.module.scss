@@ -1,0 +1,27 @@
+.container {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  margin-top: 0.5rem;
+  padding: 1rem 0 0;
+
+  input {
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 5px 0 0 5px;
+    height: 40px;
+    padding: 0 0.5rem;
+    width: 85%;
+  }
+}
+
+.searchButton {
+  background-color: #2bae66;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  width: 15%;
+
+  svg {
+    font-size: 1rem;
+  }
+}

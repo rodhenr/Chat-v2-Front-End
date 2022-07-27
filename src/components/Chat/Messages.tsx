@@ -1,6 +1,7 @@
-import styles from "../styles/Chat.module.scss";
-import avatar from "../images/avatar.webp";
-import avatarM from "../images/avatar_m.png";
+import avatar from "../../images/avatar.webp";
+import avatarM from "../../images/avatar_m.png";
+
+import styles from "../../styles/Chat/Messages.module.scss";
 
 interface message {
   lastSeen: string;
@@ -13,7 +14,7 @@ interface message {
   userAvatar: string;
 }
 
-function ChatMessage() {
+function Messages() {
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
   const messages: message[] = [
     {
@@ -32,7 +33,7 @@ function ChatMessage() {
         sender: "Me",
         message: "Testando uma mensagem",
       },
-      status: "online",
+      status: "offline",
       user: "Alguém Aleatório",
       userAvatar: avatarM,
     },
@@ -51,26 +52,30 @@ function ChatMessage() {
   return (
     <div
       className={
-        messages.length > 0
-          ? styles.messageContainer
-          : styles.messageContainerNoMessage
+        messages.length > 0 ? styles.container : styles.containerNoMessage
       }
     >
       {messages.length === 0 ? (
-        <p className={styles.messageNoMessage}>Nenhuma mensagem para exibir</p>
+        <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
         messages.map((i) => {
           return (
             <div className={styles.message}>
               <div className={styles.messageUser}>
-                <div className={styles.messageUserAvatar}>
+                <div
+                  className={
+                    i.status === "online"
+                      ? `${styles.userAvatar} ${styles.online}`
+                      : styles.userAvatar
+                  }
+                >
                   {i.userAvatar !== "none" ? (
                     <img src={i.userAvatar} alt="User Avatar" />
                   ) : (
                     baseAvatar
                   )}
                 </div>
-                <div className={styles.messageUserInfo}>
+                <div className={styles.userInfo}>
                   <p>{i.user}</p>
                   <p>
                     {i.lastMessage.sender === "Me" ? `Você:` : ""}{" "}
@@ -80,16 +85,8 @@ function ChatMessage() {
                   </p>
                 </div>
               </div>
-
               <div className={styles.messageInfo}>
                 <p>{i.lastSeen}</p>
-                <div
-                  className={
-                    i.status === "online"
-                      ? `${styles.messageInfoStatus} ${styles.messageOnline}`
-                      : styles.messageInfoStatus
-                  }
-                ></div>
               </div>
             </div>
           );
@@ -99,4 +96,4 @@ function ChatMessage() {
   );
 }
 
-export default ChatMessage;
+export default Messages;
