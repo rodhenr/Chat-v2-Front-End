@@ -49,42 +49,52 @@ function ChatMessage() {
   ];
 
   return (
-    <div className={styles.messageContainer}>
-      {messages.map((i) => {
-        return (
-          <div className={styles.message}>
-            <div className={styles.messageUser}>
-              <div className={styles.messageUserAvatar}>
-                {i.userAvatar !== "none" ? (
-                  <img src={i.userAvatar} alt="User Avatar" />
-                ) : (
-                  baseAvatar
-                )}
+    <div
+      className={
+        messages.length > 0
+          ? styles.messageContainer
+          : styles.messageContainerNoMessage
+      }
+    >
+      {messages.length === 0 ? (
+        <p className={styles.messageNoMessage}>Nenhuma mensagem para exibir</p>
+      ) : (
+        messages.map((i) => {
+          return (
+            <div className={styles.message}>
+              <div className={styles.messageUser}>
+                <div className={styles.messageUserAvatar}>
+                  {i.userAvatar !== "none" ? (
+                    <img src={i.userAvatar} alt="User Avatar" />
+                  ) : (
+                    baseAvatar
+                  )}
+                </div>
+                <div className={styles.messageUserInfo}>
+                  <p>{i.user}</p>
+                  <p>
+                    {i.lastMessage.sender === "Me" ? `Você:` : ""}{" "}
+                    {i.lastMessage.message.length >= 25
+                      ? `${i.lastMessage.message.slice(0, 25)}...`
+                      : i.lastMessage.message}
+                  </p>
+                </div>
               </div>
-              <div className={styles.messageUserInfo}>
-                <p>{i.user}</p>
-                <p>
-                  {i.lastMessage.sender === "Me" ? `Você:` : ""}{" "}
-                  {i.lastMessage.message.length >= 25
-                    ? `${i.lastMessage.message.slice(0, 25)}...`
-                    : i.lastMessage.message}
-                </p>
-              </div>
-            </div>
 
-            <div className={styles.messageInfo}>
-              <p>{i.lastSeen}</p>
-              <div
-                className={
-                  i.status === "online"
-                    ? `${styles.messageInfoStatus} ${styles.messageOnline}`
-                    : styles.messageInfoStatus
-                }
-              ></div>
+              <div className={styles.messageInfo}>
+                <p>{i.lastSeen}</p>
+                <div
+                  className={
+                    i.status === "online"
+                      ? `${styles.messageInfoStatus} ${styles.messageOnline}`
+                      : styles.messageInfoStatus
+                  }
+                ></div>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })
+      )}
     </div>
   );
 }

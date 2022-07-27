@@ -13,9 +13,6 @@ function ChatHeader() {
           <p className={styles.headerStatus}>Online</p>
         </div>
       </div>
-      <div className={styles.headerLogout}>
-        <p>LOGOUT</p>
-      </div>
     </div>
   );
 }

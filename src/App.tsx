@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Auth from "./layout/Auth";
 import Chat from "./pages/Chat";
+import Chatting from './components/Chatting'
 import HasToken from "./layout/HasToken";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -8,7 +9,7 @@ import Register from "./pages/Register";
 function App() {
   return (
     <div>
-      <Chat />
+      <Chatting />
     </div>
   );
 }
