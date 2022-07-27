@@ -1,9 +1,13 @@
 import styles from "../styles/Chat.module.scss";
 import avatar from "../images/avatar.webp";
+import avatarM from "../images/avatar_m.png";
 
 interface message {
   lastSeen: string;
-  lastMessage: string;
+  lastMessage: {
+    sender: string;
+    message: string;
+  };
   status: string;
   user: string;
   userAvatar: string;
@@ -14,9 +18,32 @@ function ChatMessage() {
   const messages: message[] = [
     {
       lastSeen: "20m",
-      lastMessage: "Como vão as coisas?",
+      lastMessage: {
+        sender: "Pessoa Aleatória",
+        message: "Como vão as coisas?",
+      },
       status: "online",
       user: "Pessoa Aleatória",
+      userAvatar: "none",
+    },
+    {
+      lastSeen: "2h",
+      lastMessage: {
+        sender: "Me",
+        message: "Testando uma mensagem",
+      },
+      status: "online",
+      user: "Alguém Aleatório",
+      userAvatar: avatarM,
+    },
+    {
+      lastSeen: "1d",
+      lastMessage: {
+        sender: "Outra Pessoa",
+        message: "Uma grande mensagem no chat",
+      },
+      status: "offline",
+      user: "Outra Pessoa",
       userAvatar: "none",
     },
   ];
@@ -28,11 +55,20 @@ function ChatMessage() {
           <div className={styles.message}>
             <div className={styles.messageUser}>
               <div className={styles.messageUserAvatar}>
-                {i.userAvatar !== "none" ? i.userAvatar : baseAvatar}
+                {i.userAvatar !== "none" ? (
+                  <img src={i.userAvatar} alt="User Avatar" />
+                ) : (
+                  baseAvatar
+                )}
               </div>
               <div className={styles.messageUserInfo}>
                 <p>{i.user}</p>
-                <p>{i.lastMessage}</p>
+                <p>
+                  {i.lastMessage.sender === "Me" ? `Você:` : ""}{" "}
+                  {i.lastMessage.message.length >= 25
+                    ? `${i.lastMessage.message.slice(0, 25)}...`
+                    : i.lastMessage.message}
+                </p>
               </div>
             </div>
 

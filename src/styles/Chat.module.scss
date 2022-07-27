@@ -85,16 +85,16 @@
 
 /* CHAT MESSAGES*/
 .messageContainer {
-  background-color: #fff;
-  border-radius: 10px;
-
   margin: 0 1rem;
-  padding: 0.5rem;
 }
 
 .message {
+  background-color: #fff;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0.5rem;
 }
 
 .messageUser {
@@ -127,7 +127,7 @@
   align-items: flex-end;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
   padding-right: 0.5rem;
 
   p {
