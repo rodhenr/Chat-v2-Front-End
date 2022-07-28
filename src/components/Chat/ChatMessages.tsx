@@ -37,7 +37,7 @@ function ChatMessages() {
   ];
 
   return (
-    <div className={styles.messages}>
+    <div className={styles.container}>
       {receivedMessages.map((i) => {
         return (
           <div

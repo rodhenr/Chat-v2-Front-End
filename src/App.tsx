@@ -9,10 +9,12 @@ import Register from "./pages/Register";
 
 import Chatting from "./components/Chat/ChatPage";
 
+import styles from './styles/App.module.scss'
+
 function App() {
   return (
-    <div>
-      <Chatting />
+    <div className={styles.container}>
+      <Chat />
     </div>
   );
 }

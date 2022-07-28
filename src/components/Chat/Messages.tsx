@@ -47,6 +47,26 @@ function Messages() {
       user: "Outra Pessoa",
       userAvatar: "none",
     },
+    {
+      lastSeen: "20m",
+      lastMessage: {
+        sender: "Pessoa Aleatória",
+        message: "Como vão as coisas?",
+      },
+      status: "online",
+      user: "Pessoa Aleatória",
+      userAvatar: "none",
+    },
+    {
+      lastSeen: "2h",
+      lastMessage: {
+        sender: "Me",
+        message: "Testando uma mensagem",
+      },
+      status: "offline",
+      user: "Alguém Aleatório",
+      userAvatar: avatarM,
+    },
   ];
 
   return (

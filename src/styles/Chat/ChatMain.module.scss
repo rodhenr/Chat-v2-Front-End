@@ -1,11 +1,56 @@
 .container {
-  background-color: #edf6f9;
   box-sizing: border-box;
+  background-color: #edf6f9;
   font-family: "Roboto Condensed", sans-serif;
   height: 100vh;
   padding: 1rem;
+
+  @media (min-width: 900px) {
+    display: flex;
+    height: 100%;
+    padding: 0;
+  }
 }
 
 .info {
   display: flex;
+}
+
+.leftColumn {
+  background-color: #2bae66;
+  display: flex;
+  width: 65px;
+}
+
+.main {
+  display: grid;
+  grid-template-rows: 100px calc(100% - 100px);
+  flex-grow: 1;
+}
+
+.userInfo {
+  display: flex;
+  gap: 1rem;
+  justify-self: flex-end;
+  padding: 1rem;
+}
+
+.searchAndChat {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat {
+  display: flex;
+  height: calc(100% - 55px);
+}
+
+.messagesInfo {
+  padding-left: 1rem;
+}
+
+.chatMessage {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
