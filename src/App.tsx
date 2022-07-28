@@ -7,21 +7,7 @@ import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-import Chatting from "./components/Chat/ChatPage";
-
-import styles from './styles/App.module.scss'
-
 function App() {
-  return (
-    <div className={styles.container}>
-      <Chat />
-    </div>
-  );
-}
-
-export default App;
-
-/*function App() {
   return (
     <Routes>
       <Route path="/">
@@ -39,5 +25,3 @@ export default App;
 }
 
 export default App;
-
-*/

@@ -78,9 +78,9 @@ function Messages() {
       {messages.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        messages.map((i) => {
+        messages.map((i, index) => {
           return (
-            <div className={styles.message}>
+            <div className={styles.message} key={index}>
               <div className={styles.messageUser}>
                 <div
                   className={

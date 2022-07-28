@@ -38,7 +38,7 @@ function ChatMessages() {
 
   return (
     <div className={styles.container}>
-      {receivedMessages.map((i) => {
+      {receivedMessages.map((i, index) => {
         return (
           <div
             className={
@@ -46,6 +46,7 @@ function ChatMessages() {
                 ? `${styles.singleMessage} ${styles.myMessage}`
                 : `${styles.singleMessage} ${styles.userMessage}`
             }
+            key={index}
           >
             <p>{i.message}</p>
             <p className={styles.messageHour}>{`${i.date.getHours()}:${

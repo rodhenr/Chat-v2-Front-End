@@ -1,15 +1,21 @@
+import { useEffect, useState } from "react";
+
 import UserInfo from "../components/Chat/UserInfo";
-import Message from "../components/Chat/Messages";
+import Messages from "../components/Chat/Messages";
+import MessagesMobile from "../components/Chat/MessagesMobile";
 import Search from "../components/Chat/Search";
 import Logout from "../components/Chat/Logout";
 import ChatMessages from "../components/Chat/ChatMessages";
 import Logo from "../components/Chat/Logo";
 import SendMessage from "../components/Chat/SendMessage";
 
+import { useGetInfoUserQuery } from "../features/chat/chatApiSlice";
+
 import styles from "../styles/Chat/ChatMain.module.scss";
-import { useEffect, useState } from "react";
 
 function Chat() {
+  const { data = [], isSuccess } = useGetInfoUserQuery();
+
   function getWindowSize() {
     const width = window.innerWidth;
     return width;
@@ -29,16 +35,18 @@ function Chat() {
     };
   }, []);
 
-  return windowSize < 900 ? (
+  const mobile = (
     <div className={styles.container}>
       <div className={styles.info}>
         <UserInfo />
         <Logout />
       </div>
       <Search />
-      <Message />
+      <MessagesMobile />
     </div>
-  ) : (
+  );
+
+  const desktop = (
     <div className={styles.container}>
       <div className={styles.leftColumn}>
         <Logo />
@@ -52,7 +60,7 @@ function Chat() {
           <Search />
           <div className={styles.chat}>
             <div className={styles.messagesInfo}>
-              <Message />
+              <Messages />
             </div>
             <div className={styles.chatMessage}>
               <ChatMessages />
@@ -63,10 +71,8 @@ function Chat() {
       </div>
     </div>
   );
+
+  return isSuccess && windowSize < 900 ? mobile : desktop;
 }
 
 export default Chat;
-
-/*
-
-*/

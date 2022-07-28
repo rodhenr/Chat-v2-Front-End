@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import registerSlice from "../features/auth/registerSlice";
 import loginSlice from "../features/auth/loginSlice";
 import { apiSlice } from "./api/apiSlice";
+
 import authSlice from "../features/auth/authSlice";
 
 export const store = configureStore({
