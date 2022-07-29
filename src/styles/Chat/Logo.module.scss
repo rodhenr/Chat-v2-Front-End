@@ -1,0 +1,21 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h2 {
+    color: #2bae66;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  span {
+    font-weight: 600;
+  }
+
+  svg {
+    color: #2bae66;
+    font-size: 1.8rem;
+  }
+}

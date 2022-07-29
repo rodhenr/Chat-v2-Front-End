@@ -36,7 +36,7 @@ function Login() {
         })
       );
 
-      dispatch(setToken(userToken.acessToken));
+      dispatch(setToken(userToken));
 
       navigate("/?");
     } catch (err) {

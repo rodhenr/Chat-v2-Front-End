@@ -1,6 +1,8 @@
 .container {
   box-sizing: border-box;
   background-color: #edf6f9;
+  display: grid;
+  grid-template-rows: 100px 70px 1fr 70px;
   font-family: "Roboto Condensed", sans-serif;
   height: 100vh;
   padding: 1rem;

@@ -43,6 +43,7 @@ function Chat() {
       </div>
       <Search />
       <MessagesMobile />
+      <Logo />
     </div>
   );
 
