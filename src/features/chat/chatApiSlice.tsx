@@ -1,6 +1,7 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
 interface MessageInfo {
+  _id: string;
   avatar: string;
   firstName: string;
   lastName: string;
@@ -9,8 +10,8 @@ interface MessageInfo {
 
 interface Messages {
   _id: string;
-  sender: null | MessageInfo;
-  receiver: null | MessageInfo;
+  sender: MessageInfo | null;
+  receiver: MessageInfo | null;
   message: string;
   createdAt: Date;
 }
@@ -22,6 +23,20 @@ interface Data {
   status: string;
 }
 
+interface MessagesChat {
+  _id: string;
+  sender: string;
+  receiver: string;
+  message: string;
+  createdAt: Date;
+}
+
+interface Chat {
+  data: MessagesChat[];
+  userId: string;
+  chatInfo: MessageInfo
+}
+
 export const chatApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getInfoUser: builder.query<Data, void>({
@@ -30,7 +45,13 @@ export const chatApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getChatInfo: builder.query<Chat, string>({
+      query: (id) => ({
+        url: `/chat/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetInfoUserQuery } = chatApiSlice;
+export const { useGetInfoUserQuery, useGetChatInfoQuery } = chatApiSlice;

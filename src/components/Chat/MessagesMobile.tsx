@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 import avatar from "../../images/avatar.webp";
 
@@ -6,7 +8,12 @@ import styles from "../../styles/Chat/Messages.module.scss";
 function Messages() {
   const data = chatApiSlice.endpoints.getInfoUser.useQueryState();
   const userData = data?.data;
+  const navigate = useNavigate();
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
+
+  const handleNavigate = (id: string) => {
+    navigate(`/chat/${id}`);
+  };
 
   return userData ? (
     <div
@@ -19,9 +26,24 @@ function Messages() {
       {userData.messages.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        userData.messages.map((i, index) => {
+        userData.messages.map((i) => {
+          const { sender, receiver } = i;
+          let id: string;
+
+          if(sender) {
+            id = sender._id
+          } 
+          
+          if(receiver) {
+            id = receiver._id
+          }
+
           return (
-            <div className={styles.message} key={index}>
+            <div
+              className={styles.message}
+              key={i._id}
+              onClick={() => handleNavigate(id)}
+            >
               <div className={styles.messageUser}>
                 <div
                   className={

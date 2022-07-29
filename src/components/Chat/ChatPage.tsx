@@ -14,7 +14,7 @@ function ChatPage() {
         <FontAwesomeIcon icon={faArrowLeft} />
         <UserInfo />
       </div>
-      <ChatMessages />
+      <ChatMessages id="" />
       <SendMessage />
     </div>
   );

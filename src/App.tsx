@@ -6,6 +6,7 @@ import Auth from "./layout/Auth";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ChatMobile from "./pages/ChatMobile";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
         <Route path="chat" element={<Auth />}>
           <Route index element={<Chat />} />
+          <Route path=":id" element={<ChatMobile />} />
         </Route>
       </Route>
     </Routes>

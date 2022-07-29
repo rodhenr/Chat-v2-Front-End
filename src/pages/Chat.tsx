@@ -14,7 +14,7 @@ import { useGetInfoUserQuery } from "../features/chat/chatApiSlice";
 import styles from "../styles/Chat/ChatMain.module.scss";
 
 function Chat() {
-  const { data = [], isSuccess } = useGetInfoUserQuery();
+  const { isSuccess } = useGetInfoUserQuery();
 
   function getWindowSize() {
     const width = window.innerWidth;
@@ -63,7 +63,7 @@ function Chat() {
               <Messages />
             </div>
             <div className={styles.chatMessage}>
-              <ChatMessages />
+              <ChatMessages id="" />
               <SendMessage />
             </div>
           </div>

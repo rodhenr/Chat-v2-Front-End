@@ -2,20 +2,26 @@
   align-items: center;
   background-color: #fff;
   box-sizing: border-box;
-  display: flex;
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: 1fr 50px;
   justify-content: center;
+  padding: 0 1rem;
 
   input {
     background-color: transparent;
     border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 5px 0 0 5px;
     box-sizing: border-box;
     height: 50px;
     padding: 0 0.5rem;
-    width: 350px;
 
     &:focus {
       outline: none;
+    }
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+      font-size: 1rem;
     }
   }
 
@@ -52,8 +58,8 @@
 }
 
 .sendButton {
-  background-color: #727272;
-  border: 1px solid rgba(0, 0, 0, 0.25);
+  background-color: #2bae66;
+  border: none;
   border-radius: 0 5px 5px 0;
   box-sizing: border-box;
   color: #fff;
@@ -61,14 +67,12 @@
   height: 50px;
   min-height: 50px;
   min-width: 50px;
-  width: 50px;
 
   svg {
     font-size: 1.1rem;
   }
 
   @media (min-width: 900px) {
-    background-color: #2bae66;
     border: none;
     border-radius: 50%;
     margin-right: 0.6rem;

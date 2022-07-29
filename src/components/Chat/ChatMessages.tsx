@@ -1,63 +1,40 @@
+import { chatApiSlice } from "../../features/chat/chatApiSlice";
+
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 
-interface MessagesReceived {
-  sender: string;
-  receiver: string;
-  message: string;
-  date: Date;
+interface Props {
+  id: string;
 }
 
-function ChatMessages() {
-  const receivedMessages: MessagesReceived[] = [
-    {
-      sender: "Rodrigo Henrique",
-      receiver: "Usuário Aleatório",
-      message: "Uma mensagem",
-      date: new Date(),
-    },
-    {
-      sender: "Usuário Aleatório",
-      receiver: "Rodrigo Henrique",
-      message: "Alguma outra mensagem bem grande",
-      date: new Date(),
-    },
-    {
-      sender: "Rodrigo Henrique",
-      receiver: "Usuário Aleatório",
-      message:
-        "Uma outra mensagem grande aqui asdsadsads adasd as das dasds asa",
-      date: new Date(),
-    },
-    {
-      sender: "Usuário Aleatório",
-      receiver: "Rodrigo Henrique",
-      message: "Outra mensagem",
-      date: new Date(),
-    },
-  ];
+function ChatMessages({ id }: Props) {
+  const data = chatApiSlice.endpoints.getChatInfo.useQueryState(id).data?.data;
 
-  return (
+  return data !== undefined ? (
     <div className={styles.container}>
-      {receivedMessages.map((i, index) => {
+      {data.map((i, index) => {
         return (
           <div
             className={
-              i.sender === "Rodrigo Henrique"
+              i.sender === id
                 ? `${styles.singleMessage} ${styles.myMessage}`
                 : `${styles.singleMessage} ${styles.userMessage}`
             }
             key={index}
           >
             <p>{i.message}</p>
-            <p className={styles.messageHour}>{`${i.date.getHours()}:${
-              i.date.getMinutes() < 10
-                ? `0${i.date.getMinutes()}`
-                : i.date.getMinutes()
+            <p className={styles.messageHour}>{`${new Date(
+              i.createdAt
+            ).getHours()}:${
+              new Date(i.createdAt).getMinutes() < 10
+                ? `0${new Date(i.createdAt).getMinutes()}`
+                : new Date(i.createdAt).getMinutes()
             }`}</p>
           </div>
         );
       })}
     </div>
+  ) : (
+    <div>Carregando...</div>
   );
 }
 
