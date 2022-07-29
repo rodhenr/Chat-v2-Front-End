@@ -16,8 +16,8 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
 
-        <Route element={<Auth />}>
-          <Route path="chat" element={<Chat />} />
+        <Route path="chat" element={<Auth />}>
+          <Route index element={<Chat />} />
         </Route>
       </Route>
     </Routes>
