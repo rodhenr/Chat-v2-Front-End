@@ -3,6 +3,7 @@
   background-color: #f0fff7;
   display: grid;
   grid-template-rows: 100px 70px 1fr 70px;
+  justify-content: center;
   font-family: "Roboto Condensed", sans-serif;
   height: 100vh;
   padding: 1rem;
@@ -57,12 +58,14 @@
     box-sizing: border-box;
     grid-area: messages;
     padding-left: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 }
 
 .chat {
   @media (min-width: 900px) {
     grid-area: chat;
+    overflow-y: scroll;
   }
 }
 

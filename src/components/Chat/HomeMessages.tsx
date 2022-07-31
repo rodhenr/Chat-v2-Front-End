@@ -36,6 +36,31 @@ function HomeMessages() {
     dispatch(setChatting({ contactId, isChatting: true }));
   };
 
+  const messageData = (created: Date) => {
+    const newDate = new Date(created);
+    const dateMonth = newDate.getMonth();
+    const dateDay = newDate.getDate();
+    const dateYear = newDate.getFullYear();
+    const date = `${newDate.getDate()}${newDate.getMonth()}`;
+
+    const today = new Date();
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDate();
+    const dateToday = `${today.getDate()}${today.getMonth()}`;
+
+    if (dateToday === date) {
+      return `${newDate.getHours()}:${newDate.getMinutes()}`;
+    } else if (todayMonth === dateMonth && todayDay - 1 === dateDay) {
+      return "Ontem";
+    } else if (todayMonth - 1 === dateMonth && todayDay - 1 === 0) {
+      return "Ontem";
+    } else if (todayMonth - 1 === -1 && todayDay - 1 === 0) {
+      return "Ontem";
+    } else {
+      return `${dateDay}/${dateMonth + 1}/${dateYear}`;
+    }
+  };
+
   return data ? (
     <div
       className={
@@ -47,10 +72,15 @@ function HomeMessages() {
       ) : (
         data.messages.map((i, index) => {
           const func: Function = width > 900 ? handleChat : handleNavigate;
+          const date = messageData(i.createdAt);
 
           return (
             <div
-              className={styles.message}
+              className={
+                cId === i.contactId
+                  ? `${styles.message} ${styles.active}`
+                  : styles.message
+              }
               key={index}
               onClick={() => func(i.contactId!)}
             >
@@ -68,7 +98,13 @@ function HomeMessages() {
                     baseAvatar
                   )}
                 </div>
-                <div className={styles.userInfo}>
+                <div
+                  className={
+                    cId === i.contactId
+                      ? `${styles.userInfo} ${styles.userActive}`
+                      : styles.userInfo
+                  }
+                >
                   <p>{i.fullName}</p>
                   <p>
                     {i.sender === data.userId ? `Você:` : ""}{" "}
@@ -79,7 +115,7 @@ function HomeMessages() {
                 </div>
               </div>
               <div className={styles.messageInfo}>
-                <p></p>
+                <p>{date}</p>
               </div>
             </div>
           );

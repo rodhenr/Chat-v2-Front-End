@@ -1,14 +1,19 @@
 .container {
   align-items: center;
-
   display: grid;
   grid-template-columns: 1fr 50px;
-  width: 100%;
+  width: 350px;
+
+  
+  @media (min-width: 600px) {
+    width: 450px;
+  }
 
   @media (min-width: 900px) {
     box-sizing: border-box;
     gap: 3rem;
     padding: 1rem;
+    width: fit-content;
   }
 }
 
@@ -32,11 +37,6 @@
   }
 }
 
-.messagesInfo {
-  @media (min-width: 900px) {
-    grid-area: messages;
-  }
-}
 .info {
   display: flex;
   flex-direction: column;

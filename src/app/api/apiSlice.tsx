@@ -41,5 +41,6 @@ const baseQueryWithReauth: BaseQueryFn<
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
+  tagTypes: ["Chat", "Messages"],
   endpoints: () => ({}),
 });

@@ -3,7 +3,7 @@ import { apiSlice } from "../../app/api/apiSlice";
 interface Messages {
   avatar: string;
   contactId: string;
-  createdAt: string | object;
+  createdAt: Date;
   fullName: string;
   message: string;
   sender: string | null;
@@ -53,12 +53,14 @@ export const chatApiSlice = apiSlice.injectEndpoints({
         url: "/chat",
         method: "GET",
       }),
+      providesTags: ["Messages"],
     }),
     chatInfo: builder.query<DataChat, string>({
       query: (contactId) => ({
         url: `/chat/${contactId}`,
         method: "GET",
       }),
+      providesTags: ["Chat"],
     }),
     sendMessage: builder.mutation<void, MessageSent>({
       query: (data) => ({
@@ -66,6 +68,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Chat", "Messages"],
     }),
     addUser: builder.mutation<void, string>({
       query: (contactId) => ({
@@ -73,6 +76,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { contactId },
       }),
+      invalidatesTags: ["Messages"],
     }),
   }),
 });
