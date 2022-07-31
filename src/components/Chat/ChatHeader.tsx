@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router";
 
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { setChatting } from "../../features/chat/chatSlice";
 
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
@@ -15,6 +16,7 @@ import styles from "../../styles/Chat/ChatHeader.module.scss";
 
 function ChatHeader() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const params = useParams();
   const contactId = params.contactId!;
 
@@ -29,12 +31,15 @@ function ChatHeader() {
     ? (data =
         chatApiSlice.endpoints.chatInfo.useQueryState(cId).data?.contactInfo)
     : (data =
-        chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data?.contactInfo);
-
-  //preciso fazer mobile(contactId) e desktop (cId)
+        chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data
+          ?.contactInfo);
 
   const handleNavigate = () => {
     navigate("/chat");
+  };
+
+  const handleClose = () => {
+    dispatch(setChatting({ contactId: "", isChatting: false }));
   };
 
   const mobile = (
@@ -61,6 +66,12 @@ function ChatHeader() {
 
   const desktop = (
     <div className={styles.container}>
+      <FontAwesomeIcon
+        icon={faArrowLeft}
+        onClick={() => {
+          handleClose();
+        }}
+      />
       <div className={styles.avatar}>
         {data?.avatar === "" ? (
           baseAvatar

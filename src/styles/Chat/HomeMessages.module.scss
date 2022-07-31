@@ -65,6 +65,12 @@
 
 .active {
   background-color: #2bae66;
+
+  p {
+    &:last-of-type {
+      color: #fff;
+    }
+  }
 }
 
 .messageUser {
@@ -106,7 +112,6 @@
 
 .userActive {
   p {
-
     &:last-of-type {
       color: #fff;
       font-size: 1rem;
