@@ -1,4 +1,4 @@
-import UserInfo from "./UserInfo";
+import UserInfo from "./HomeHeader";
 import SendMessage from "./SendMessage";
 import ChatMessages from "./ChatMessages";
 
@@ -14,7 +14,7 @@ function ChatPage() {
         <FontAwesomeIcon icon={faArrowLeft} />
         <UserInfo />
       </div>
-      <ChatMessages id="" />
+      <ChatMessages />
       <SendMessage />
     </div>
   );

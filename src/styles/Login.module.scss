@@ -1,18 +1,14 @@
 .container {
-  align-items: center;
-  background-color: #EDF6F9;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  background-color: #edf6f9;
+  display: grid;
+  grid-template-rows: 200px 1fr;
   font-family: "Roboto Condensed", sans-serif;
-  gap: 7rem;
-  min-height: 100vh;
+  height: 100vh;
 
   @media (min-width: 900px) {
     display: grid;
     gap: 0;
     grid-template-columns: 0.4fr 0.6fr;
-    grid-template-areas: "logo login";
   }
 }
 
@@ -22,11 +18,11 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  font-family: "Jura", sans-serif;
   padding: 2rem 0;
   width: 100%;
 
   h2 {
+    color: #fff;
     font-size: 2.5rem;
     font-weight: 400;
     margin: 0;
@@ -43,7 +39,6 @@
 
   @media (min-width: 900px) {
     box-sizing: border-box;
-    grid-area: logo;
     height: 100vh;
     justify-content: center;
 
@@ -58,13 +53,21 @@
 }
 
 .login {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 3rem;
 
   @media (min-width: 900px) {
     align-items: center;
     grid-area: login;
   }
+}
+
+.loginInfos {
+  position: relative;
 }
 
 .loginTitle {
@@ -74,8 +77,18 @@
 
 .errorMessage {
   align-self: center;
-  font-size: 1.2rem;
   color: red;
+  font-size: 1.2rem;
+  left: 50%;
+  margin: 0;
+  position: absolute;
+  top: -40px;
+  transform: translate(-50%, 0);
+  text-align: center;
+}
+
+.errorMessage .active {
+  display: block;
 }
 
 .form {
@@ -83,11 +96,10 @@
   flex-direction: column;
 
   input {
-    background-color: #EDF6F9;
+    background-color: #edf6f9;
     border: none;
     border-bottom: 2px solid #2bae66;
     font-size: 1rem;
-    width: 300px;
 
     &:first-of-type {
       margin-bottom: 1.5rem;
@@ -145,7 +157,6 @@
 .register {
   align-self: center;
   font-size: 1.2rem;
-  margin: 4rem 0;
 
   span {
     color: #2bae66;

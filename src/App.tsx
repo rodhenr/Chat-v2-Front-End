@@ -3,10 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import HasToken from "./layout/HasToken";
 import Auth from "./layout/Auth";
 
-import Chat from "./pages/Chat";
+import ChatHome from "./pages/ChatHome";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ChatMobile from "./pages/ChatMobile";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -18,8 +18,8 @@ function App() {
         </Route>
 
         <Route path="chat" element={<Auth />}>
-          <Route index element={<Chat />} />
-          <Route path=":id" element={<ChatMobile />} />
+          <Route index element={<ChatHome />} />
+          <Route path=":contactId" element={<Chat />} />
         </Route>
       </Route>
     </Routes>

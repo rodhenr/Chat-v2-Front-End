@@ -1,79 +1,24 @@
-import { useEffect, useState } from "react";
-
-import UserInfo from "../components/Chat/UserInfo";
-import Messages from "../components/Chat/Messages";
-import MessagesMobile from "../components/Chat/MessagesMobile";
-import Search from "../components/Chat/Search";
-import Logout from "../components/Chat/Logout";
+import ChatHeader from "../components/Chat/ChatHeader";
 import ChatMessages from "../components/Chat/ChatMessages";
-import Logo from "../components/Chat/Logo";
 import SendMessage from "../components/Chat/SendMessage";
+import { useChatInfoQuery } from "../features/chat/chatApiSlice";
+import { useParams } from "react-router-dom";
 
-import { useGetInfoUserQuery } from "../features/chat/chatApiSlice";
-
-import styles from "../styles/Chat/ChatMain.module.scss";
+import styles from "../styles/Chat/ChatMobile.module.scss";
 
 function Chat() {
-  const { isSuccess } = useGetInfoUserQuery();
+  let params = useParams();
+  const contactId = params.contactId!;
 
-  function getWindowSize() {
-    const width = window.innerWidth;
-    return width;
-  }
+  useChatInfoQuery(contactId);
 
-  const [windowSize, setWindowSize] = useState(getWindowSize());
-
-  useEffect(() => {
-    function handleWindowResize() {
-      setWindowSize(getWindowSize());
-    }
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
-  const mobile = (
+  return (
     <div className={styles.container}>
-      <div className={styles.info}>
-        <UserInfo />
-        <Logout />
-      </div>
-      <Search />
-      <MessagesMobile />
-      <Logo />
+      <ChatHeader />
+      <ChatMessages />
+      <SendMessage />
     </div>
   );
-
-  const desktop = (
-    <div className={styles.container}>
-      <div className={styles.leftColumn}>
-        <Logo />
-      </div>
-      <div className={styles.main}>
-        <div className={styles.userInfo}>
-          <UserInfo />
-          <Logout />
-        </div>
-        <div className={styles.searchAndChat}>
-          <Search />
-          <div className={styles.chat}>
-            <div className={styles.messagesInfo}>
-              <Messages />
-            </div>
-            <div className={styles.chatMessage}>
-              <ChatMessages id="" />
-              <SendMessage />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  return isSuccess && windowSize < 900 ? mobile : desktop;
 }
 
 export default Chat;

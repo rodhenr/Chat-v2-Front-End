@@ -1,24 +1,25 @@
-import avatar from "../../images/avatar_m.png";
+import { useNavigate } from "react-router";
+
+import { useParams } from "react-router-dom";
 
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-import { useNavigate } from "react-router";
+import avatar from "../../images/avatar_m.png";
 
-import styles from "../../styles/Chat/UserInfoChat.module.scss";
+import styles from "../../styles/Chat/ChatHeader.module.scss";
 
-interface Props {
-  id: string;
-}
-
-function UserInfoChat({ id }: Props) {
+function ChatHeader() {
   const navigate = useNavigate();
-  const data =
-    chatApiSlice.endpoints.getChatInfo.useQueryState(id).data?.chatInfo;
+  const params = useParams();
+  const contactId = params.contactId!;
+
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
-  const customAvatar = <img src={data?.avatar} alt="User Avatar" />;
+
+  const data =
+    chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data?.contactInfo;
 
   const handleNavigate = () => {
     navigate("/chat");
@@ -33,13 +34,15 @@ function UserInfoChat({ id }: Props) {
         }}
       />
       <div className={styles.avatar}>
-        {data.avatar === "" ? baseAvatar : customAvatar}
+        {data.avatar === "" ? (
+          baseAvatar
+        ) : (
+          <img src={data.avatar} alt="User avatar" />
+        )}
       </div>
       <div className={styles.info}>
-        <p className={styles.infoName}>
-          {`${data.firstName} ${data.lastName}`}
-        </p>
-        <p className={styles.infoStatus}>{data?.status}</p>
+        <p className={styles.infoName}>{data.fullName}</p>
+        <p className={styles.infoStatus}>ID: {data.contactId}</p>
       </div>
     </div>
   ) : (
@@ -47,4 +50,4 @@ function UserInfoChat({ id }: Props) {
   );
 }
 
-export default UserInfoChat;
+export default ChatHeader;

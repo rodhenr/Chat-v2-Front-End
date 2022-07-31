@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { loginError, loginData } from "../features/auth/loginSlice";
 import { setToken } from "../features/auth/authSlice";
+import Logo from "../components/Chat/Logo";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faCommentDots } from "@fortawesome/free-solid-svg-icons";
@@ -38,11 +39,9 @@ function Login() {
 
       dispatch(setToken(userToken));
 
-      navigate("/?");
+      navigate("/chat");
     } catch (err) {
-      const error = err as ErrorType; // Necessário criar uma interface para lidar com o erro
-
-      console.log(error);
+      const error = err as ErrorType; // Necessário criar uma interface para lidar com o err
       if (!error?.status) {
         dispatch(loginError("Sem resposta do servidor"));
       } else if (error?.status === 400) {
@@ -58,14 +57,14 @@ function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <FontAwesomeIcon icon={faCommentDots} />
-        <h2>
-          WS<span>CHAT</span>
-        </h2>
+        <Logo />
       </div>
       <div className={styles.login}>
-        <p className={styles.errorMessage}>{error}</p>
-        <h1 className={styles.loginTitle}>LOGIN</h1>
+        <div className={styles.loginInfos}>
+          <p className={styles.errorMessage}>{error}</p>
+          <h1 className={styles.loginTitle}>LOGIN</h1>
+        </div>
+
         <div className={styles.form}>
           <LoginInputs />
           <p className={styles.forgotPassword}>Esqueceu sua senha?</p>

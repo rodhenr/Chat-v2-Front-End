@@ -1,57 +1,84 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
-interface MessageInfo {
-  _id: string;
+interface Messages {
   avatar: string;
-  firstName: string;
-  lastName: string;
+  contactId: string;
+  createdAt: string | object;
+  fullName: string;
+  message: string;
+  sender: string | null;
   status: string;
 }
 
-interface Messages {
-  _id: string;
-  sender: MessageInfo | null;
-  receiver: MessageInfo | null;
-  message: string;
-  createdAt: Date;
-}
-
-interface Data {
-  fullName: string;
+interface DataMain {
   avatar: string;
+  connections: string[];
+  fullName: string;
   messages: Messages[];
   status: string;
-}
-
-interface MessagesChat {
-  _id: string;
-  sender: string;
-  receiver: string;
-  message: string;
-  createdAt: Date;
-}
-
-interface Chat {
-  data: MessagesChat[];
   userId: string;
-  chatInfo: MessageInfo
+}
+
+interface ChatMessages {
+  _id: string;
+  createdAt: Date;
+  message: string;
+  receiver: string;
+  sender: string;
+}
+
+interface DataChat {
+  contactInfo: {
+    avatar: string;
+    contactId: string;
+    fullName: string;
+    status: string;
+  };
+  messageInfo: ChatMessages[];
+  userInfo: {
+    userId: string;
+  };
+}
+
+interface MessageSent {
+  data: { message: string; sender: string; receiver: string };
+  id: string;
 }
 
 export const chatApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getInfoUser: builder.query<Data, void>({
+    mainChatInfo: builder.query<DataMain, void>({
       query: () => ({
         url: "/chat",
         method: "GET",
       }),
     }),
-    getChatInfo: builder.query<Chat, string>({
-      query: (id) => ({
-        url: `/chat/${id}`,
+    chatInfo: builder.query<DataChat, string>({
+      query: (contactId) => ({
+        url: `/chat/${contactId}`,
         method: "GET",
+      }),
+    }),
+    sendMessage: builder.mutation<void, MessageSent>({
+      query: ({ data, id }) => ({
+        url: `/chat/${id}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addUser: builder.mutation<void, string>({
+      query: (email) => ({
+        url: "/chat/add",
+        method: "POST",
+        body: { email },
       }),
     }),
   }),
 });
 
-export const { useGetInfoUserQuery, useGetChatInfoQuery } = chatApiSlice;
+export const {
+  useMainChatInfoQuery,
+  useChatInfoQuery,
+  useSendMessageMutation,
+  useAddUserMutation,
+} = chatApiSlice;

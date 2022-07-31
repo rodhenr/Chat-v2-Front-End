@@ -1,25 +1,25 @@
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
+import { useParams } from "react-router-dom";
+
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 
-interface Props {
-  id: string;
-}
+function ChatMessages() {
+  let params = useParams();
+  const contactId = params.contactId!;
+  const data = chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data;
 
-function ChatMessages({ id }: Props) {
-  const data = chatApiSlice.endpoints.getChatInfo.useQueryState(id).data?.data;
-
-  return data !== undefined ? (
+  return data ? (
     <div className={styles.container}>
-      {data.map((i, index) => {
+      {data.messageInfo.map((i) => {
         return (
           <div
             className={
-              i.sender === id
+              i.receiver === contactId
                 ? `${styles.singleMessage} ${styles.myMessage}`
                 : `${styles.singleMessage} ${styles.userMessage}`
             }
-            key={index}
+            key={i._id}
           >
             <p>{i.message}</p>
             <p className={styles.messageHour}>{`${new Date(

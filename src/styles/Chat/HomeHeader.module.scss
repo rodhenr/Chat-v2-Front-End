@@ -1,0 +1,55 @@
+.container {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  width: 100%;
+}
+
+.userInfo {
+  align-items: center;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.avatar {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+
+  img {
+    border: 2px solid #2bae66;
+    border-radius: 50%;
+    box-sizing: border-box;
+    height: 60px;
+    width: 60px;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoName {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.infoId {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.logout {
+  align-self: flex-start;
+  background-color: #2bae66;
+  border-radius: 5px;
+  padding: 0.3rem 0.6rem;
+  text-align: center;
+
+  p {
+    color: #fff;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+}

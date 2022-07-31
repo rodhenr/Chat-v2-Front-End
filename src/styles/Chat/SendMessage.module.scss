@@ -68,6 +68,10 @@
   min-height: 50px;
   min-width: 50px;
 
+  &:disabled {
+    background-color: #aeaeae;
+  }
+
   svg {
     font-size: 1.1rem;
   }

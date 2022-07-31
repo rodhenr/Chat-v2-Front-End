@@ -7,13 +7,13 @@ import { chatApiSlice } from "../../features/chat/chatApiSlice";
 import styles from "../../styles/Chat/Messages.module.scss";
 
 function Messages() {
-  const data = chatApiSlice.endpoints.getInfoUser.useQueryState();
+  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState();
   const userData = data?.data;
   const navigate = useNavigate();
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
 
-  const handleNavigate = (id: string) => {
-    navigate(`/chat/${id}`);
+  const handleNavigate = (contactId: string) => {
+    navigate(`/chat/${contactId}`);
   };
 
   return userData ? (
@@ -27,49 +27,35 @@ function Messages() {
       {userData?.messages.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        userData?.messages.map((i) => {
-          const { sender, receiver } = i;
-          let id: string;
+        userData?.messages.map((i, index) => {
+          let id = "";
 
-          if(sender) {
-            id = sender._id
-          } 
-          
-          if(receiver) {
-            id = receiver._id
-          }
+          if (i.sender) id = i.sender;
 
           return (
             <div
               className={styles.message}
-              key={i._id}
+              key={index}
               onClick={() => handleNavigate(id)}
             >
               <div className={styles.messageUser}>
                 <div
                   className={
-                    i.sender?.status === "online" ||
-                    i.receiver?.status === "online"
+                    i.status === "online"
                       ? `${styles.userAvatar} ${styles.online}`
                       : styles.userAvatar
                   }
                 >
-                  {i.sender !== null && i.sender?.avatar !== "" ? (
-                    <img src={i.sender?.avatar} alt="User Avatar" />
-                  ) : i.receiver !== null && i.receiver?.avatar !== "" ? (
-                    <img src={i.receiver?.avatar} alt="User Avatar" />
+                  {i.avatar !== "" ? (
+                    <img src={i.avatar} alt="User Avatar" />
                   ) : (
                     baseAvatar
                   )}
                 </div>
                 <div className={styles.userInfo}>
+                  <p>{i.fullName}</p>
                   <p>
-                    {i.sender
-                      ? `${i.sender?.firstName} ${i.sender?.lastName}`
-                      : `${i.receiver?.firstName} ${i.receiver?.lastName}`}
-                  </p>
-                  <p>
-                    {i.receiver ? `Você:` : ""}{" "}
+                    {i.sender === userData.userId ? `Você:` : ""}{" "}
                     {i.message.length >= 25
                       ? `${i.message.slice(0, 25)}...`
                       : i.message}
