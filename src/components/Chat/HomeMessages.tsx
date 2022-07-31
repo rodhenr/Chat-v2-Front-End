@@ -4,39 +4,34 @@ import avatar from "../../images/avatar.webp";
 
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
-import styles from "../../styles/Chat/Messages.module.scss";
+import styles from "../../styles/Chat/HomeMessages.module.scss";
 
-function Messages() {
-  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState();
-  const userData = data?.data;
+function HomeMessages() {
   const navigate = useNavigate();
+
+  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
+
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
 
   const handleNavigate = (contactId: string) => {
     navigate(`/chat/${contactId}`);
   };
 
-  return userData ? (
+  return data ? (
     <div
       className={
-        userData?.messages.length > 0
-          ? styles.container
-          : styles.containerNoMessage
+        data.messages.length > 0 ? styles.container : styles.containerNoMessage
       }
     >
-      {userData?.messages.length === 0 ? (
+      {data.messages.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        userData?.messages.map((i, index) => {
-          let id = "";
-
-          if (i.sender) id = i.sender;
-
+        data.messages.map((i, index) => {
           return (
             <div
               className={styles.message}
               key={index}
-              onClick={() => handleNavigate(id)}
+              onClick={() => handleNavigate(i.contactId!)}
             >
               <div className={styles.messageUser}>
                 <div
@@ -55,7 +50,7 @@ function Messages() {
                 <div className={styles.userInfo}>
                   <p>{i.fullName}</p>
                   <p>
-                    {i.sender === userData.userId ? `Você:` : ""}{" "}
+                    {i.sender === data.userId ? `Você:` : ""}{" "}
                     {i.message.length >= 25
                       ? `${i.message.slice(0, 25)}...`
                       : i.message}
@@ -75,4 +70,4 @@ function Messages() {
   );
 }
 
-export default Messages;
+export default HomeMessages;

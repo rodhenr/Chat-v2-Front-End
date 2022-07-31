@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
 import HomeHeader from "../components/Chat/HomeHeader";
-import Messages from "../components/Chat/Messages";
-import MessagesMobile from "../components/Chat/MessagesMobile";
+import HomeMessages from "../components/Chat/HomeMessages";
 import Search from "../components/Chat/Search";
 import ChatMessages from "../components/Chat/ChatMessages";
 import Logo from "../components/Chat/Logo";
@@ -10,10 +9,10 @@ import SendMessage from "../components/Chat/SendMessage";
 
 import { useMainChatInfoQuery } from "../features/chat/chatApiSlice";
 
-import styles from "../styles/Chat/ChatMain.module.scss";
+import styles from "../styles/Chat/ChatHome.module.scss";
 
 function ChatHome() {
-  const { isSuccess } = useMainChatInfoQuery();
+  useMainChatInfoQuery();
 
   function getWindowSize() {
     const width = window.innerWidth;
@@ -36,11 +35,9 @@ function ChatHome() {
 
   const mobile = (
     <div className={styles.container}>
-      <div className={styles.info}>
-        <HomeHeader />
-      </div>
+      <HomeHeader />
       <Search />
-      <MessagesMobile />
+      <HomeMessages />
       <Logo />
     </div>
   );
@@ -50,25 +47,27 @@ function ChatHome() {
       <div className={styles.leftColumn}>
         <Logo />
       </div>
-      <div className={styles.main}>
+      <div className={styles.header}>
         <HomeHeader />
-        <div className={styles.searchAndChat}>
-          <Search />
-          <div className={styles.chat}>
-            <div className={styles.messagesInfo}>
-              <Messages />
-            </div>
-            <div className={styles.chatMessage}>
-              <ChatMessages />
-              <SendMessage />
-            </div>
-          </div>
-        </div>
+      </div>
+      <div className={styles.search}>
+        <Search />
+      </div>
+      <div className={styles.info}></div>
+
+      <div className={styles.messages}>
+        <HomeMessages />
+      </div>
+      <div className={styles.chat}>
+        <ChatMessages />
+      </div>
+      <div className={styles.send}>
+        <SendMessage />
       </div>
     </div>
   );
 
-  return isSuccess && windowSize < 900 ? mobile : desktop;
+  return windowSize < 900 ? mobile : desktop;
 }
 
 export default ChatHome;

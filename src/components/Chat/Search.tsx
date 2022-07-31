@@ -19,8 +19,9 @@ function Search() {
 
     try {
       await addUser(search);
+      setSearch("");
     } catch (err) {
-      console.log(err);
+      console.log(err); //alterar
     }
   };
 

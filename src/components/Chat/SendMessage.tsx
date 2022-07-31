@@ -32,8 +32,9 @@ function SendMessage() {
 
     try {
       await sendDispatch({
-        data: { message, sender: senderId, receiver: contactId },
-        id: contactId,
+        msg: message,
+        sender: senderId,
+        receiver: contactId,
       });
       setMessage("");
     } catch (err) {

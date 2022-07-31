@@ -25,7 +25,7 @@ function ChatHeader() {
     navigate("/chat");
   };
 
-  return data ? (
+  return (
     <div className={styles.container}>
       <FontAwesomeIcon
         icon={faArrowLeft}
@@ -34,19 +34,17 @@ function ChatHeader() {
         }}
       />
       <div className={styles.avatar}>
-        {data.avatar === "" ? (
+        {data?.avatar === "" ? (
           baseAvatar
         ) : (
-          <img src={data.avatar} alt="User avatar" />
+          <img src={data?.avatar} alt="User avatar" />
         )}
       </div>
       <div className={styles.info}>
-        <p className={styles.infoName}>{data.fullName}</p>
-        <p className={styles.infoStatus}>ID: {data.contactId}</p>
+        <p className={styles.infoName}>{data?.fullName}</p>
+        <p className={styles.infoStatus}>ID: {data?.contactId}</p>
       </div>
     </div>
-  ) : (
-    <div>...</div>
   );
 }
 

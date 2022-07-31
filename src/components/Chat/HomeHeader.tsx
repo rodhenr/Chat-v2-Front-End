@@ -8,12 +8,10 @@ import avatar from "../../images/avatar_m.png";
 import styles from "../../styles/Chat/HomeHeader.module.scss";
 
 function HomeHeader() {
-  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState();
-  const userData = data?.data;
-  const baseAvatar = <img src={avatar} alt="User Avatar" />;
-  const customAvatar = <img src={userData?.avatar} alt="User Avatar" />;
-
   const dispatch = useDispatch();
+  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
+  const baseAvatar = <img src={avatar} alt="User Avatar" />;
+  const customAvatar = <img src={data?.avatar} alt="User Avatar" />;
 
   const handleLogout = () => {
     dispatch(clearToken());
@@ -23,11 +21,11 @@ function HomeHeader() {
     <div className={styles.container}>
       <div className={styles.userInfo}>
         <div className={styles.avatar}>
-          {userData?.avatar === "" ? baseAvatar : customAvatar}
+          {data?.avatar === "" ? baseAvatar : customAvatar}
         </div>
         <div className={styles.info}>
-          <p className={styles.infoName}>{userData?.fullName}</p>
-          <p className={styles.infoId}>ID: {userData?.userId}</p>
+          <p className={styles.infoName}>{data?.fullName}</p>
+          <p className={styles.infoId}>ID: {data?.userId}</p>
         </div>
       </div>
       <div className={styles.logout}>

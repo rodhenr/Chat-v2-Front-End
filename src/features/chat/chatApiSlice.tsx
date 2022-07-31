@@ -41,8 +41,9 @@ interface DataChat {
 }
 
 interface MessageSent {
-  data: { message: string; sender: string; receiver: string };
-  id: string;
+  msg: string;
+  sender: string;
+  receiver: string;
 }
 
 export const chatApiSlice = apiSlice.injectEndpoints({
@@ -60,17 +61,17 @@ export const chatApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     sendMessage: builder.mutation<void, MessageSent>({
-      query: ({ data, id }) => ({
-        url: `/chat/${id}`,
+      query: (data) => ({
+        url: "/send",
         method: "POST",
         body: data,
       }),
     }),
     addUser: builder.mutation<void, string>({
-      query: (email) => ({
-        url: "/chat/add",
+      query: (contactId) => ({
+        url: "/add",
         method: "POST",
-        body: { email },
+        body: { contactId },
       }),
     }),
   }),
