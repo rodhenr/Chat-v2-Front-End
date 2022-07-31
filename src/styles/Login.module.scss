@@ -2,13 +2,13 @@
   background-color: #f0fff7;
   display: grid;
   grid-template-rows: 200px 1fr;
-  font-family: "Roboto Condensed", sans-serif;
   height: 100vh;
 
   @media (min-width: 900px) {
     display: grid;
-    gap: 0;
     grid-template-columns: 0.4fr 0.6fr;
+    grid-template-rows: 1fr;
+    gap: 0;
   }
 }
 
@@ -57,12 +57,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
   padding: 0 3rem;
 
   @media (min-width: 900px) {
     align-items: center;
-    grid-area: login;
   }
 }
 
@@ -96,7 +94,7 @@
   flex-direction: column;
 
   input {
-    background-color: #edf6f9;
+    background-color: transparent;
     border: none;
     border-bottom: 2px solid #2bae66;
     font-size: 1rem;
@@ -114,6 +112,8 @@
     gap: 0;
 
     input {
+      width: 340px;
+
       &:first-of-type {
         margin-bottom: 1.5rem;
       }

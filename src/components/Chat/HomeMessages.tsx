@@ -1,13 +1,28 @@
 import { useNavigate } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { setChatting } from "../../features/chat/chatSlice";
+
+import { skipToken } from "@reduxjs/toolkit/query";
+
 import avatar from "../../images/avatar.webp";
 
-import { chatApiSlice } from "../../features/chat/chatApiSlice";
+import {
+  chatApiSlice,
+  useChatInfoQuery,
+} from "../../features/chat/chatApiSlice";
 
 import styles from "../../styles/Chat/HomeMessages.module.scss";
 
 function HomeMessages() {
+  const width = useSelector((state: RootState) => state.chat.width);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cId = useSelector((state: RootState) => state.chat.contactId);
+  const isChatting = useSelector((state: RootState) => state.chat.isChatting);
+
+  useChatInfoQuery(isChatting ? cId : skipToken);
 
   const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
@@ -15,6 +30,10 @@ function HomeMessages() {
 
   const handleNavigate = (contactId: string) => {
     navigate(`/chat/${contactId}`);
+  };
+
+  const handleChat = (contactId: string) => {
+    dispatch(setChatting({ contactId, isChatting: true }));
   };
 
   return data ? (
@@ -27,11 +46,13 @@ function HomeMessages() {
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
         data.messages.map((i, index) => {
+          const func: Function = width > 900 ? handleChat : handleNavigate;
+
           return (
             <div
               className={styles.message}
               key={index}
-              onClick={() => handleNavigate(i.contactId!)}
+              onClick={() => func(i.contactId!)}
             >
               <div className={styles.messageUser}>
                 <div

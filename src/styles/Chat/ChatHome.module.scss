@@ -23,7 +23,7 @@
   }
 }
 
-.leftColumn {
+.logo {
   background-color: #2bae66;
 
   @media (min-width: 900px) {
@@ -47,7 +47,8 @@
 
 .info {
   @media (min-width: 900px) {
-    grid-area: search;
+    align-self: center;
+    grid-area: info;
   }
 }
 
@@ -62,6 +63,17 @@
 .chat {
   @media (min-width: 900px) {
     grid-area: chat;
+  }
+}
+
+.chatNoMessage {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  p {
+    font-size: 1.5rem;
+    margin: 0;
   }
 }
 

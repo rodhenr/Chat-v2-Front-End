@@ -1,13 +1,23 @@
-import { chatApiSlice } from "../../features/chat/chatApiSlice";
-
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+
+import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 
 function ChatMessages() {
   let params = useParams();
   const contactId = params.contactId!;
-  const data = chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data;
+
+  const width = useSelector((state: RootState) => state.chat.width);
+  const cId = useSelector((state: RootState) => state.chat.contactId);
+
+  let data;
+
+  width > 900
+    ? (data = chatApiSlice.endpoints.chatInfo.useQueryState(cId).data)
+    : (data = chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data);
 
   return data ? (
     <div className={styles.container}>
@@ -15,7 +25,7 @@ function ChatMessages() {
         return (
           <div
             className={
-              i.receiver === contactId
+              i.receiver === contactId || i.receiver === cId
                 ? `${styles.singleMessage} ${styles.myMessage}`
                 : `${styles.singleMessage} ${styles.userMessage}`
             }

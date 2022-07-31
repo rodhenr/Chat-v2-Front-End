@@ -8,7 +8,7 @@ import { setToken } from "../features/auth/authSlice";
 import Logo from "../components/Chat/Logo";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import LoginInputs from "../components/LoginInputs";
 
 import styles from "../styles/Login.module.scss";
