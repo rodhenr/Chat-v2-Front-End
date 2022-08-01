@@ -20,10 +20,11 @@ const authSlice = createSlice({
     clearToken: (state) => {
       state.token = "";
     },
+    clearStore() {},
   },
 });
 
-export const { setToken, clearToken } = authSlice.actions;
+export const { clearStore, clearToken, setToken } = authSlice.actions;
 
 export const selectToken = (state: RootState) => state.auth.token;
 

@@ -1,4 +1,9 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  Reducer,
+  AnyAction,
+} from "@reduxjs/toolkit";
 
 import { apiSlice } from "./api/apiSlice";
 import authSlice from "../features/auth/authSlice";
@@ -17,13 +22,26 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authSlice,
   chat: chatSlice,
   login: loginSlice,
   register: registerSlice,
 });
+
+
+// Procurar como não afetar as actions
+/*
+const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
+  if (action.type === "auth/clearStore") {
+    storage.removeItem("persist:root");
+    state = {} as RootState;
+  }
+
+  return appReducer(state, action);
+};
+*/
 
 const persistConfig = {
   key: "root",
@@ -32,7 +50,7 @@ const persistConfig = {
   whitelist: ["auth"],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, appReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

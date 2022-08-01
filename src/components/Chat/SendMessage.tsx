@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import socket from "../../socket";
 
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -36,13 +38,25 @@ function SendMessage() {
     setMessage(text);
   };
 
+  // WEBSOCKET, ENVIA UMA MENSAGEM
+  const onMessage = () => {
+    width > 900
+      ? socket.emit("private message", {
+          content: { msg: message, sender: senderId, receiver: cId },
+          to: cId,
+        })
+      : socket.emit("private message", {
+          content: { msg: message, sender: senderId, receiver: contactId },
+          to: contactId,
+        });
+  };
+
   const handleSubmit = async () => {
     if (message === "") return;
 
-    //problema de aparecer so apos reload
-
     try {
-      width > 900
+      onMessage();
+      /*width > 900
         ? await sendDispatch({
             msg: message,
             sender: senderId,
@@ -52,7 +66,7 @@ function SendMessage() {
             msg: message,
             sender: senderId,
             receiver: contactId,
-          });
+          });*/
 
       setMessage("");
     } catch (err) {

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import socket from "../socket";
+
 import { useDispatch, useSelector } from "react-redux";
 import { changeWidth } from "../features/chat/chatSlice";
 import { RootState } from "../app/store";
@@ -17,7 +19,7 @@ import styles from "../styles/Chat/ChatHome.module.scss";
 import ChatHeader from "../components/Chat/ChatHeader";
 
 function ChatHome() {
-  useMainChatInfoQuery();
+  const { data, isSuccess } = useMainChatInfoQuery();
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const dispatch = useDispatch();
 
@@ -43,6 +45,25 @@ function ChatHome() {
   useEffect(() => {
     dispatch(changeWidth(windowSize));
   }, [windowSize, dispatch]);
+
+  const authSocket = (id: string) => {
+    socket.auth = { id };
+    socket.connect();
+  };
+
+  isSuccess && authSocket(data.userId);
+
+  // ao receber uma mensagem, atualiza o localStorage
+  useEffect(() => {
+    socket.on("private message", (data) => {
+      const oldMessages = JSON.parse(
+        window.localStorage.getItem("messages") || ""
+      );
+
+      const newMessages = [...oldMessages, data];
+      window.localStorage.setItem("messages", JSON.stringify(newMessages));
+    });
+  }, [socket]);
 
   const mobile = (
     <div className={styles.container}>

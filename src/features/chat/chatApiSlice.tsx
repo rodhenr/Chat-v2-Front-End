@@ -10,9 +10,17 @@ interface Messages {
   status: string;
 }
 
+interface DataConnection {
+  avatar: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+  userId: string;
+}
+
 interface DataMain {
   avatar: string;
-  connections: string[];
+  connections: DataConnection[];
   fullName: string;
   messages: Messages[];
   status: string;

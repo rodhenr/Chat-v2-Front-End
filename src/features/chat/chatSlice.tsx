@@ -1,8 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface Message {
+  createdAt: Date;
+  message: string;
+  receiver: string;
+  sender: string;
+}
+
+interface State {
+  contactId: string;
+  isChatting: boolean;
+  messages: Message[] | [];
+  width: number;
+}
+
+const initialState: State = {
   contactId: "",
   isChatting: false,
+  messages: [],
   width: 0,
 };
 
@@ -19,9 +34,13 @@ const chatSlice = createSlice({
       const width = action.payload;
       state.width = width;
     },
+    changeMessages: (state, action) => {
+      const newMessages = action.payload;
+      state.messages = newMessages;
+    },
   },
 });
 
-export const { changeWidth, setChatting } = chatSlice.actions;
+export const { changeWidth, changeMessages, setChatting } = chatSlice.actions;
 
 export default chatSlice.reducer;

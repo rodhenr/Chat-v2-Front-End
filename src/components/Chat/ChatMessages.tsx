@@ -5,15 +5,29 @@ import { RootState } from "../../app/store";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+interface Messages {
+  message: string;
+  sender: string;
+  receiver: string;
+  createdAt: Date;
+}
 
 function ChatMessages() {
+  const [messages, setMessages] = useState<Messages[]>([]);
   let params = useParams();
   const contactId = params.contactId!;
   const lastDay = useRef("");
 
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
+
+  // pega os itens do localStorage
+  useEffect(() => {
+    const msgs = window.localStorage.getItem("messages")!;
+    setMessages(JSON.parse(msgs) || []);
+  }, [messages]);
 
   let data;
 

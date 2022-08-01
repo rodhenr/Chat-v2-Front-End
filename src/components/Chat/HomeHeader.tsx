@@ -1,5 +1,7 @@
 import { useDispatch } from "react-redux";
-import { clearToken } from "../../features/auth/authSlice";
+import { clearStore } from "../../features/auth/authSlice";
+
+import socket from "../../socket";
 
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
@@ -14,7 +16,8 @@ function HomeHeader() {
   const customAvatar = <img src={data?.avatar} alt="User Avatar" />;
 
   const handleLogout = () => {
-    dispatch(clearToken());
+    dispatch(clearStore());
+    socket.disconnect();
   };
 
   return (

@@ -16,19 +16,22 @@ import {
 import styles from "../../styles/Chat/HomeMessages.module.scss";
 
 function HomeMessages() {
-  const width = useSelector((state: RootState) => state.chat.width);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const baseAvatar = <img src={avatar} alt="User Avatar" />;
+
+  const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
+  const messages = useSelector((state: RootState) => state.chat.messages);
 
   useChatInfoQuery(isChatting ? cId : skipToken);
 
   const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
-  const baseAvatar = <img src={avatar} alt="User Avatar" />;
-
   const handleNavigate = (contactId: string) => {
+    dispatch(setChatting({ contactId, isChatting: true }));
     navigate(`/chat/${contactId}`);
   };
 
@@ -60,29 +63,36 @@ function HomeMessages() {
       return `${dateDay}/${dateMonth + 1}/${dateYear}`;
     }
   };
-  
+
   return data ? (
     <div
       className={
-        data.messages.length > 0 ? styles.container : styles.containerNoMessage
+        data.connections.length > 0
+          ? styles.container
+          : styles.containerNoMessage
       }
     >
-      {data.messages.length === 0 ? (
+      {data.connections.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        data.messages.map((i, index) => {
+        data.connections.map((i, index) => {
+          const lastMessage = messages
+            .slice()
+            .reverse()
+            .find(
+              (item) => item.sender === i.userId || item.receiver === i.userId
+            );
           const func: Function = width > 900 ? handleChat : handleNavigate;
-          const date = messageData(i.createdAt);
 
           return (
             <div
               className={
-                cId === i.contactId
+                cId === i.userId && width > 900
                   ? `${styles.message} ${styles.active}`
                   : styles.message
               }
               key={index}
-              onClick={() => func(i.contactId!)}
+              onClick={() => func(i.userId)}
             >
               <div className={styles.messageUser}>
                 <div
@@ -100,22 +110,30 @@ function HomeMessages() {
                 </div>
                 <div
                   className={
-                    cId === i.contactId
+                    cId === i.userId
                       ? `${styles.userInfo} ${styles.userActive}`
                       : styles.userInfo
                   }
                 >
-                  <p>{i.fullName}</p>
-                  <p>
-                    {i.sender === data.userId ? `Você:` : ""}{" "}
-                    {i.message.length >= 25
-                      ? `${i.message.slice(0, 25)}...`
-                      : i.message}
-                  </p>
+                  <p>{`${i.firstName} ${i.lastName}`}</p>
+                  {lastMessage !== undefined ? (
+                    <p>
+                      {i.userId !== data.userId ? `Você:` : ""}{" "}
+                      {lastMessage?.message?.length >= 25
+                        ? `${lastMessage?.message.slice(0, 25)}...`
+                        : lastMessage?.message}
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
                 </div>
               </div>
               <div className={styles.messageInfo}>
-                <p>{date}</p>
+                {lastMessage !== undefined ? (
+                  <p>{messageData(lastMessage?.createdAt)}</p>
+                ) : (
+                  <p></p>
+                )}
               </div>
             </div>
           );
