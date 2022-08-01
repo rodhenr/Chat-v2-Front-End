@@ -24,7 +24,10 @@ function HomeMessages() {
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
-  const messages = useSelector((state: RootState) => state.chat.messages);
+  const messages = useSelector((state: RootState) => state.messages.messages);
+  const connectedUsers = useSelector(
+    (state: RootState) => state.messages.connectedUsers
+  );
 
   useChatInfoQuery(isChatting ? cId : skipToken);
 
@@ -41,6 +44,8 @@ function HomeMessages() {
 
   const messageData = (created: Date) => {
     const newDate = new Date(created);
+    const dateHours = newDate.getHours();
+    const dateMinutes = newDate.getMinutes();
     const dateMonth = newDate.getMonth();
     const dateDay = newDate.getDate();
     const dateYear = newDate.getFullYear();
@@ -52,7 +57,15 @@ function HomeMessages() {
     const dateToday = `${today.getDate()}${today.getMonth()}`;
 
     if (dateToday === date) {
-      return `${newDate.getHours()}:${newDate.getMinutes()}`;
+      if (dateHours < 10 && dateMinutes < 10) {
+        return `0${dateHours}:0${dateMinutes}`;
+      } else if (dateHours < 10) {
+        return `0${dateHours}:${dateMinutes}`;
+      } else if (dateMinutes < 10) {
+        return `${dateHours}:0${dateMinutes}`;
+      } else {
+        return `${dateHours}:${dateMinutes}`;
+      }
     } else if (todayMonth === dateMonth && todayDay - 1 === dateDay) {
       return "Ontem";
     } else if (todayMonth - 1 === dateMonth && todayDay - 1 === 0) {
@@ -80,8 +93,11 @@ function HomeMessages() {
             .slice()
             .reverse()
             .find(
-              (item) => item.sender === i.userId || item.receiver === i.userId
+              (item) =>
+                (item.sender === i.userId && item.receiver === data.userId) ||
+                (item.receiver === i.userId && item.sender === data.userId)
             );
+
           const func: Function = width > 900 ? handleChat : handleNavigate;
 
           return (
@@ -97,7 +113,7 @@ function HomeMessages() {
               <div className={styles.messageUser}>
                 <div
                   className={
-                    i.status === "online"
+                    connectedUsers.some((item) => item === i.userId)
                       ? `${styles.userAvatar} ${styles.online}`
                       : styles.userAvatar
                   }
@@ -110,7 +126,7 @@ function HomeMessages() {
                 </div>
                 <div
                   className={
-                    cId === i.userId
+                    cId === i.userId && width > 900
                       ? `${styles.userInfo} ${styles.userActive}`
                       : styles.userInfo
                   }
@@ -118,7 +134,7 @@ function HomeMessages() {
                   <p>{`${i.firstName} ${i.lastName}`}</p>
                   {lastMessage !== undefined ? (
                     <p>
-                      {i.userId !== data.userId ? `Você:` : ""}{" "}
+                      {i.userId === data.userId ? `Você:` : ""}{" "}
                       {lastMessage?.message?.length >= 25
                         ? `${lastMessage?.message.slice(0, 25)}...`
                         : lastMessage?.message}
@@ -130,7 +146,7 @@ function HomeMessages() {
               </div>
               <div className={styles.messageInfo}>
                 {lastMessage !== undefined ? (
-                  <p>{messageData(lastMessage?.createdAt)}</p>
+                  <p>{messageData(JSON.parse(lastMessage?.createdAt))}</p>
                 ) : (
                   <p></p>
                 )}

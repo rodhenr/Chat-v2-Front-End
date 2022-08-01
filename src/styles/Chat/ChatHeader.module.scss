@@ -9,6 +9,7 @@
 
   svg {
     color: #2bae66;
+    cursor: pointer;
     font-size: 1.3rem;
   }
 
@@ -36,11 +37,17 @@
   width: 60px;
 
   img {
-    border: 2px solid #2bae66;
+    border: 2px solid #bbbbbb;
     border-radius: 50%;
     box-sizing: border-box;
     height: 60px;
     width: 60px;
+  }
+}
+
+.online {
+  img {
+    border: 2px solid #2bae66;
   }
 }
 

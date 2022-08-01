@@ -1,20 +1,16 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
 interface Messages {
-  avatar: string;
-  contactId: string;
-  createdAt: Date;
-  fullName: string;
+  createdAt: string;
   message: string;
-  sender: string | null;
-  status: string;
+  receiver: string;
+  sender: string;
 }
 
 interface DataConnection {
   avatar: string;
   firstName: string;
   lastName: string;
-  status: string;
   userId: string;
 }
 
@@ -23,16 +19,7 @@ interface DataMain {
   connections: DataConnection[];
   fullName: string;
   messages: Messages[];
-  status: string;
   userId: string;
-}
-
-interface ChatMessages {
-  _id: string;
-  createdAt: Date;
-  message: string;
-  receiver: string;
-  sender: string;
 }
 
 interface DataChat {
@@ -40,18 +27,11 @@ interface DataChat {
     avatar: string;
     contactId: string;
     fullName: string;
-    status: string;
   };
-  messageInfo: ChatMessages[];
+  messages: Messages[];
   userInfo: {
     userId: string;
   };
-}
-
-interface MessageSent {
-  msg: string;
-  sender: string;
-  receiver: string;
 }
 
 export const chatApiSlice = apiSlice.injectEndpoints({
@@ -70,14 +50,6 @@ export const chatApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Chat"],
     }),
-    sendMessage: builder.mutation<void, MessageSent>({
-      query: (data) => ({
-        url: "/send",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Chat", "Messages"],
-    }),
     addUser: builder.mutation<void, string>({
       query: (contactId) => ({
         url: "/add",
@@ -89,9 +61,5 @@ export const chatApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useMainChatInfoQuery,
-  useChatInfoQuery,
-  useSendMessageMutation,
-  useAddUserMutation,
-} = chatApiSlice;
+export const { useMainChatInfoQuery, useChatInfoQuery, useAddUserMutation } =
+  chatApiSlice;

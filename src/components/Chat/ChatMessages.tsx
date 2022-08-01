@@ -1,39 +1,43 @@
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
-import { chatApiSlice } from "../../features/chat/chatApiSlice";
+import socket from "../../socket";
+import { useEffect } from "react";
+import { newMessage } from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
-interface Messages {
+interface Message {
+  createdAt: string;
   message: string;
-  sender: string;
   receiver: string;
-  createdAt: Date;
+  sender: string;
 }
 
 function ChatMessages() {
-  const [messages, setMessages] = useState<Messages[]>([]);
+  const dispatch = useDispatch();
   let params = useParams();
   const contactId = params.contactId!;
   const lastDay = useRef("");
 
-  const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
+  const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
-  // pega os itens do localStorage
+  const myMessages = storeMessages.filter(
+    (i) =>
+      i.receiver === cId ||
+      i.sender === cId ||
+      i.receiver === contactId ||
+      i.sender === contactId
+  );
+
   useEffect(() => {
-    const msgs = window.localStorage.getItem("messages")!;
-    setMessages(JSON.parse(msgs) || []);
-  }, [messages]);
-
-  let data;
-
-  width > 900
-    ? (data = chatApiSlice.endpoints.chatInfo.useQueryState(cId).data)
-    : (data = chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data);
+    socket.on("private message", (data: Message) => {
+      dispatch(newMessage(data));
+    });
+  }, [socket]);
 
   const months = (m: number) => {
     switch (m) {
@@ -64,23 +68,35 @@ function ChatMessages() {
     }
   };
 
-  const checkDay = (created: Date) => {
+  const checkDay = (created: Date, index: number) => {
     const newDate = new Date(created);
     const date = `${newDate.getDate()} de ${months(newDate.getMonth())}`;
 
-    if (date === lastDay.current) return null;
+    // Se for o último item do array, limpa o ref.current para o próximo render
+    if (index + 1 === myMessages.length) {
+      const check = date === lastDay.current;
+      lastDay.current = "";
 
+      if (check) {
+        return null;
+      } else {
+        return date;
+      }
+    }
+
+    if (date === lastDay.current) return null;
     lastDay.current = date;
     return date;
   };
 
-  return data ? (
+  return (
     <div className={styles.container}>
-      {data.messageInfo.map((i) => {
-        const date = checkDay(i.createdAt);
+      {myMessages.map((i, index) => {
+        const createdAt = JSON.parse(i.createdAt);
+        const date = checkDay(createdAt, index);
 
         return (
-          <div className={styles.containerMessage} key={i._id}>
+          <div className={styles.containerMessage} key={index}>
             {date ? (
               <div className={styles.dayMonth}>
                 <p>{date}</p>
@@ -95,19 +111,17 @@ function ChatMessages() {
             >
               <p>{i.message}</p>
               <p className={styles.messageHour}>{`${new Date(
-                i.createdAt
+                createdAt
               ).getHours()}:${
-                new Date(i.createdAt).getMinutes() < 10
-                  ? `0${new Date(i.createdAt).getMinutes()}`
-                  : new Date(i.createdAt).getMinutes()
+                new Date(createdAt).getMinutes() < 10
+                  ? `0${new Date(createdAt).getMinutes()}`
+                  : new Date(createdAt).getMinutes()
               }`}</p>
             </div>
           </div>
         );
       })}
     </div>
-  ) : (
-    <div>Carregando...</div>
   );
 }
 

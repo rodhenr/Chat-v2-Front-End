@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Message {
-  createdAt: Date;
+  createdAt: string;
   message: string;
   receiver: string;
   sender: string;
@@ -10,7 +10,7 @@ interface Message {
 interface State {
   contactId: string;
   isChatting: boolean;
-  messages: Message[] | [];
+  messages: Message[];
   width: number;
 }
 
@@ -34,13 +34,12 @@ const chatSlice = createSlice({
       const width = action.payload;
       state.width = width;
     },
-    changeMessages: (state, action) => {
-      const newMessages = action.payload;
-      state.messages = newMessages;
+    newMessage: (state, action: PayloadAction<Message>) => {
+      state.messages.push(action.payload);
     },
   },
 });
 
-export const { changeWidth, changeMessages, setChatting } = chatSlice.actions;
+export const { changeWidth, newMessage, setChatting } = chatSlice.actions;
 
 export default chatSlice.reducer;

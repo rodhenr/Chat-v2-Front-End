@@ -3,10 +3,12 @@ import { RootState } from "../../app/store";
 
 interface TokenState {
   token: string;
+  userId: string;
 }
 
 const initialState: TokenState = {
   token: "",
+  userId: "",
 };
 
 const authSlice = createSlice({
@@ -14,11 +16,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      const token = action.payload?.accessToken;
-      state.token = token;
+      const { accessToken, userId } = action.payload;
+      state.token = accessToken;
+      state.userId = userId;
     },
     clearToken: (state) => {
       state.token = "";
+      state.userId = "";
     },
     clearStore() {},
   },

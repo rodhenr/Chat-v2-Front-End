@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeWidth } from "../features/chat/chatSlice";
+import { changeWidth, newMessage } from "../features/chat/chatSlice";
+import {
+  addConnection,
+  removeConnection,
+} from "../features/chat/messagesSlice";
 import { RootState } from "../app/store";
 
 import HomeHeader from "../components/Chat/HomeHeader";
@@ -19,10 +23,34 @@ import styles from "../styles/Chat/ChatHome.module.scss";
 import ChatHeader from "../components/Chat/ChatHeader";
 
 function ChatHome() {
-  const { data, isSuccess } = useMainChatInfoQuery();
-  const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const dispatch = useDispatch();
+  useMainChatInfoQuery();
 
+  const isChatting = useSelector((state: RootState) => state.chat.isChatting);
+  const userId = useSelector((state: RootState) => state.auth.userId);
+
+  // Conexão do WebSocket
+  useEffect(() => {
+    socket.auth = { id: userId };
+    socket.connect();
+  }, []);
+
+  // Eventos do WebSocket
+  useEffect(() => {
+    socket.on("private message", (data) => {
+      dispatch(newMessage(data));
+    });
+
+    socket.on("user_online", (data) => {
+      dispatch(addConnection(data));
+    });
+
+    socket.on("user_offline", (data) => {
+      dispatch(removeConnection(data));
+    });
+  }, [socket]);
+
+  // Width da janela
   function getWindowSize() {
     const width = window.innerWidth;
     return width;
@@ -44,26 +72,7 @@ function ChatHome() {
 
   useEffect(() => {
     dispatch(changeWidth(windowSize));
-  }, [windowSize, dispatch]);
-
-  const authSocket = (id: string) => {
-    socket.auth = { id };
-    socket.connect();
-  };
-
-  isSuccess && authSocket(data.userId);
-
-  // ao receber uma mensagem, atualiza o localStorage
-  useEffect(() => {
-    socket.on("private message", (data) => {
-      const oldMessages = JSON.parse(
-        window.localStorage.getItem("messages") || ""
-      );
-
-      const newMessages = [...oldMessages, data];
-      window.localStorage.setItem("messages", JSON.stringify(newMessages));
-    });
-  }, [socket]);
+  }, [windowSize]);
 
   const mobile = (
     <div className={styles.container}>
