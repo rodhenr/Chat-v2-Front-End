@@ -24,13 +24,14 @@ const authSlice = createSlice({
       state.token = "";
       state.userId = "";
     },
-    clearStore() {},
+    clearUser: (state) => {
+      state.userId = "";
+    },
   },
 });
 
-export const { clearStore, clearToken, setToken } = authSlice.actions;
+export const { clearUser, clearToken, setToken } = authSlice.actions;
 
 export const selectToken = (state: RootState) => state.auth.token;
-export const selectUser = (state: RootState) => state.auth.userId;
 
 export default authSlice.reducer;

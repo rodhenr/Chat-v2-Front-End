@@ -12,6 +12,7 @@ import {
   usersConnected,
 } from "../../features/chat/chatSlice";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
+import { clearToken } from "../../features/auth/authSlice";
 
 import socket from "../../socket";
 
@@ -57,6 +58,12 @@ function HomeMessages() {
 
     socket.on("user_offline", (data: string) => {
       dispatch(removeConnection(data));
+    });
+
+    socket.on("no_id", () => {
+      dispatch(clearToken());
+      socket.disconnect();
+      window.location.reload();
     });
 
     return () => {

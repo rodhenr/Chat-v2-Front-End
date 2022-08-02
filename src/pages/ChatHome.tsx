@@ -3,13 +3,7 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addConnection,
-  changeWidth,
-  newMessage,
-  removeConnection,
-  usersConnected,
-} from "../features/chat/chatSlice";
+import { changeWidth } from "../features/chat/chatSlice";
 import { RootState } from "../app/store";
 
 import HomeHeader from "../components/Chat/HomeHeader";

@@ -8,6 +8,7 @@ import { chatApiSlice } from "../../features/chat/chatApiSlice";
 import avatar from "../../images/avatar_m.png";
 
 import styles from "../../styles/Chat/HomeHeader.module.scss";
+import { useEffect } from "react";
 
 function HomeHeader() {
   const dispatch = useDispatch();
@@ -19,6 +20,17 @@ function HomeHeader() {
     dispatch(clearToken());
     socket.disconnect();
   };
+
+  // Proteção para deslogar o usuário
+  useEffect(() => {
+    socket.on("no_id", () => {
+      handleLogout();
+    });
+
+    return () => {
+      socket.off("no_id");
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
