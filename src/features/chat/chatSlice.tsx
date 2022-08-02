@@ -8,6 +8,7 @@ interface Message {
 }
 
 interface State {
+  connectedUsers: string[];
   contactId: string;
   isChatting: boolean;
   messages: Message[];
@@ -15,6 +16,7 @@ interface State {
 }
 
 const initialState: State = {
+  connectedUsers: [],
   contactId: "",
   isChatting: false,
   messages: [],
@@ -25,21 +27,49 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setChatting: (state, action) => {
-      const { contactId, isChatting } = action.payload;
-      state.contactId = contactId;
-      state.isChatting = isChatting;
-    },
-    changeWidth: (state, action) => {
+    changeWidth: (state, action: PayloadAction<number>) => {
       const width = action.payload;
       state.width = width;
     },
     newMessage: (state, action: PayloadAction<Message>) => {
       state.messages.push(action.payload);
     },
+    setChatting: (state, action) => {
+      const { contactId, isChatting } = action.payload;
+      state.contactId = contactId;
+      state.isChatting = isChatting;
+    },
+    setMessages: (state, action: PayloadAction<Message[] | []>) => {
+      state.messages = action.payload;
+    },
+    usersConnected: (state, action: PayloadAction<string[]>) => {
+      state.connectedUsers = action.payload;
+    },
+    addConnection: (state, action: PayloadAction<string>) => {
+      const check = state.connectedUsers.some((i) => i === action.payload);
+      if (!check) {
+        state.connectedUsers.push(action.payload);
+      }
+    },
+    removeConnection: (state, action: PayloadAction<string>) => {
+      const check = state.connectedUsers.some((i) => i === action.payload);
+      if (check) {
+        state.connectedUsers = state.connectedUsers.filter(
+          (i) => i !== action.payload
+        );
+      }
+    },
   },
 });
 
-export const { changeWidth, newMessage, setChatting } = chatSlice.actions;
+export const {
+  addConnection,
+  changeWidth,
+  newMessage,
+  removeConnection,
+  setChatting,
+  setMessages,
+  usersConnected,
+} = chatSlice.actions;
 
 export default chatSlice.reducer;

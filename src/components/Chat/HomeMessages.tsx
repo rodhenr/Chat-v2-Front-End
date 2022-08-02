@@ -4,14 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { setChatting } from "../../features/chat/chatSlice";
 
-import { skipToken } from "@reduxjs/toolkit/query";
+import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
 import avatar from "../../images/avatar.webp";
-
-import {
-  chatApiSlice,
-  useChatInfoQuery,
-} from "../../features/chat/chatApiSlice";
 
 import styles from "../../styles/Chat/HomeMessages.module.scss";
 
@@ -23,13 +18,9 @@ function HomeMessages() {
 
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
-  const isChatting = useSelector((state: RootState) => state.chat.isChatting);
-  const messages = useSelector((state: RootState) => state.messages.messages);
   const connectedUsers = useSelector(
-    (state: RootState) => state.messages.connectedUsers
+    (state: RootState) => state.chat.connectedUsers
   );
-
-  useChatInfoQuery(isChatting ? cId : skipToken);
 
   const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
@@ -89,15 +80,6 @@ function HomeMessages() {
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
         data.connections.map((i, index) => {
-          const lastMessage = messages
-            .slice()
-            .reverse()
-            .find(
-              (item) =>
-                (item.sender === i.userId && item.receiver === data.userId) ||
-                (item.receiver === i.userId && item.sender === data.userId)
-            );
-
           const func: Function = width > 900 ? handleChat : handleNavigate;
 
           return (
@@ -131,13 +113,13 @@ function HomeMessages() {
                       : styles.userInfo
                   }
                 >
-                  <p>{`${i.firstName} ${i.lastName}`}</p>
-                  {lastMessage !== undefined ? (
+                  <p>{i.fullName}</p>
+                  {i.message.message ? (
                     <p>
-                      {i.userId === data.userId ? `Você:` : ""}{" "}
-                      {lastMessage?.message?.length >= 25
-                        ? `${lastMessage?.message.slice(0, 25)}...`
-                        : lastMessage?.message}
+                      {i.message.sender === data.userId ? `Você:` : ""}{" "}
+                      {i.message.message.length >= 25
+                        ? `${i.message.message.slice(0, 25)}...`
+                        : i.message.message}
                     </p>
                   ) : (
                     <p></p>
@@ -145,8 +127,8 @@ function HomeMessages() {
                 </div>
               </div>
               <div className={styles.messageInfo}>
-                {lastMessage !== undefined ? (
-                  <p>{messageData(JSON.parse(lastMessage?.createdAt))}</p>
+                {i.message.message ? (
+                  <p>{messageData(JSON.parse(i.message.createdAt))}</p>
                 ) : (
                   <p></p>
                 )}

@@ -2,10 +2,10 @@
   align-items: center;
   display: grid;
   grid-template-columns: 1fr 50px;
-  width: 350px;
+  width: 400px;
 
   @media (min-width: 600px) {
-    width: 450px;
+    width: 500px;
   }
 
   @media (min-width: 900px) {

@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeWidth, newMessage } from "../features/chat/chatSlice";
 import {
   addConnection,
+  changeWidth,
+  newMessage,
   removeConnection,
-} from "../features/chat/messagesSlice";
+  usersConnected,
+} from "../features/chat/chatSlice";
 import { RootState } from "../app/store";
 
 import HomeHeader from "../components/Chat/HomeHeader";
@@ -22,10 +24,16 @@ import { useMainChatInfoQuery } from "../features/chat/chatApiSlice";
 import styles from "../styles/Chat/ChatHome.module.scss";
 import ChatHeader from "../components/Chat/ChatHeader";
 
+interface Message {
+  createdAt: string;
+  message: string;
+  receiver: string;
+  sender: string;
+}
+
 function ChatHome() {
   const dispatch = useDispatch();
-  useMainChatInfoQuery();
-
+  useMainChatInfoQuery(undefined, { refetchOnMountOrArgChange: true });
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const userId = useSelector((state: RootState) => state.auth.userId);
 
@@ -33,22 +41,26 @@ function ChatHome() {
   useEffect(() => {
     socket.auth = { id: userId };
     socket.connect();
-  }, []);
+  }, [userId]);
 
   // Eventos do WebSocket
   useEffect(() => {
-    socket.on("private message", (data) => {
+    socket.on("private message", (data: Message) => {
       dispatch(newMessage(data));
     });
 
-    socket.on("user_online", (data) => {
+    socket.on("users_online", (data: string[] | []) => {
+      dispatch(usersConnected(data));
+    });
+
+    socket.on("user_online", (data: string) => {
       dispatch(addConnection(data));
     });
 
-    socket.on("user_offline", (data) => {
+    socket.on("user_offline", (data: string) => {
       dispatch(removeConnection(data));
     });
-  }, [socket]);
+  }, [dispatch]);
 
   // Width da janela
   function getWindowSize() {
@@ -72,7 +84,7 @@ function ChatHome() {
 
   useEffect(() => {
     dispatch(changeWidth(windowSize));
-  }, [windowSize]);
+  }, [dispatch, windowSize]);
 
   const mobile = (
     <div className={styles.container}>

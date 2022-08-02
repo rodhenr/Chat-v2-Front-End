@@ -9,8 +9,13 @@ interface Messages {
 
 interface DataConnection {
   avatar: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  message: {
+    createdAt: string;
+    message: string;
+    receiver: string;
+    sender: string;
+  };
   userId: string;
 }
 
@@ -18,7 +23,6 @@ interface DataMain {
   avatar: string;
   connections: DataConnection[];
   fullName: string;
-  messages: Messages[];
   userId: string;
 }
 
@@ -29,9 +33,6 @@ interface DataChat {
     fullName: string;
   };
   messages: Messages[];
-  userInfo: {
-    userId: string;
-  };
 }
 
 export const chatApiSlice = apiSlice.injectEndpoints({

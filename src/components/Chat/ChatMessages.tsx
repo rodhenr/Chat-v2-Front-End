@@ -1,13 +1,14 @@
+import { useRef, useEffect } from "react";
+
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
 import socket from "../../socket";
-import { useEffect } from "react";
+
 import { newMessage } from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
-import { useRef } from "react";
 
 interface Message {
   createdAt: string;
@@ -20,24 +21,17 @@ function ChatMessages() {
   const dispatch = useDispatch();
   let params = useParams();
   const contactId = params.contactId!;
+
   const lastDay = useRef("");
 
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
-  const myMessages = storeMessages.filter(
-    (i) =>
-      i.receiver === cId ||
-      i.sender === cId ||
-      i.receiver === contactId ||
-      i.sender === contactId
-  );
-
   useEffect(() => {
     socket.on("private message", (data: Message) => {
       dispatch(newMessage(data));
     });
-  }, [socket]);
+  }, [dispatch]);
 
   const months = (m: number) => {
     switch (m) {
@@ -73,7 +67,7 @@ function ChatMessages() {
     const date = `${newDate.getDate()} de ${months(newDate.getMonth())}`;
 
     // Se for o último item do array, limpa o ref.current para o próximo render
-    if (index + 1 === myMessages.length) {
+    if (index + 1 === storeMessages.length) {
       const check = date === lastDay.current;
       lastDay.current = "";
 
@@ -91,7 +85,7 @@ function ChatMessages() {
 
   return (
     <div className={styles.container}>
-      {myMessages.map((i, index) => {
+      {storeMessages.map((i, index) => {
         const createdAt = JSON.parse(i.createdAt);
         const date = checkDay(createdAt, index);
 

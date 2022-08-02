@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { clearStore, clearToken } from "../../features/auth/authSlice";
+import { clearToken } from "../../features/auth/authSlice";
 
 import socket from "../../socket";
 

@@ -2,6 +2,7 @@
   background-color: #f1f1f1;
   box-sizing: border-box;
   padding: 1rem;
+  overflow-y: scroll;
 
   @media (min-width: 600px) {
     border: 1px solid rgba(0, 0, 0, 0.35);

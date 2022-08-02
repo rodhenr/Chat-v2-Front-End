@@ -5,12 +5,13 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+
 import {
   addConnection,
+  setChatting,
   removeConnection,
-} from "../../features/chat/messagesSlice";
-
-import { setChatting } from "../../features/chat/chatSlice";
+  usersConnected,
+} from "../../features/chat/chatSlice";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 
 import socket from "../../socket";
@@ -32,21 +33,26 @@ function ChatHeader() {
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const connectedUsers = useSelector(
-    (state: RootState) => state.messages.connectedUsers
+    (state: RootState) => state.chat.connectedUsers
   );
 
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
 
   // Eventos do WebSocket
   useEffect(() => {
-    socket.on("user_online", (data) => {
+    socket.on("users_online", (data: string[] | []) => {
+      dispatch(usersConnected(data));
+      console.log("header", data)
+    });
+
+    socket.on("user_online", (data: string) => {
       dispatch(addConnection(data));
     });
 
-    socket.on("user_offline", (data) => {
+    socket.on("user_offline", (data: string) => {
       dispatch(removeConnection(data));
     });
-  }, [socket]);
+  }, [dispatch]);
 
   let data;
 

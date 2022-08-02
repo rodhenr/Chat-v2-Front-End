@@ -1,12 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import socket from "../../socket";
 
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
-import { changeMessages } from "../../features/chat/messagesSlice";
+import { newMessage } from "../../features/chat/chatSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -15,12 +14,9 @@ import styles from "../../styles/Chat/SendMessage.module.scss";
 
 function SendMessage() {
   const dispatch = useDispatch();
-  let params = useParams();
-  const contactId = params.contactId!;
   const [message, setMessage] = useState("");
 
   const cId = useSelector((state: RootState) => state.chat.contactId);
-  const storeMessages = useSelector((state: RootState) => state.messages.messages);
   const userId = useSelector((state: RootState) => state.auth.userId);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,28 +24,25 @@ function SendMessage() {
     setMessage(text);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
     if (message === "") return;
 
     try {
-      const newMessage = {
+      const newMsg = {
         createdAt: JSON.stringify(new Date()),
         message,
-        receiver: contactId || cId,
+        receiver: cId,
         sender: userId,
       };
 
       socket.emit("private message", {
-        newMessage,
+        newMessage: newMsg,
       });
 
-      dispatch(changeMessages([...storeMessages, newMessage]));
-
-      window.localStorage.setItem(
-        "messages",
-        JSON.stringify([...storeMessages, newMessage])
-      );
-
+      console.log("aqui no send")
+      dispatch(newMessage(newMsg));
       setMessage("");
     } catch (err) {
       console.log(err);
@@ -68,7 +61,7 @@ function SendMessage() {
       <button
         type="button"
         className={styles.sendButton}
-        onClick={() => handleSubmit()}
+        onClick={(e) => handleSubmit(e)}
         disabled={!message}
       >
         <FontAwesomeIcon icon={faPaperPlane} />
