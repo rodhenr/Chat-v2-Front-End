@@ -41,7 +41,6 @@ function SendMessage() {
         newMessage: newMsg,
       });
 
-      console.log("aqui no send")
       dispatch(newMessage(newMsg));
       setMessage("");
     } catch (err) {

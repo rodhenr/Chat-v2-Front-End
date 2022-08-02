@@ -1,28 +1,68 @@
+import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { setChatting } from "../../features/chat/chatSlice";
-
+import {
+  addConnection,
+  newMessage,
+  removeConnection,
+  setChatting,
+  usersConnected,
+} from "../../features/chat/chatSlice";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
+
+import socket from "../../socket";
 
 import avatar from "../../images/avatar.webp";
 
 import styles from "../../styles/Chat/HomeMessages.module.scss";
 
+interface Message {
+  createdAt: string;
+  message: string;
+  receiver: string;
+  sender: string;
+}
+
 function HomeMessages() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
 
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
+
   const connectedUsers = useSelector(
     (state: RootState) => state.chat.connectedUsers
   );
 
-  const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
+  // Eventos do WebSocket
+  useEffect(() => {
+    socket.on("private message", (data: Message) => {
+      dispatch(newMessage(data));
+    });
+
+    socket.on("users_online", (data: string[] | []) => {
+      dispatch(usersConnected(data));
+    });
+
+    socket.on("user_online", (data: string) => {
+      dispatch(addConnection(data));
+    });
+
+    socket.on("user_offline", (data: string) => {
+      dispatch(removeConnection(data));
+    });
+
+    return () => {
+      socket.removeAllListeners();
+    };
+  }, [dispatch]);
 
   const handleNavigate = (contactId: string) => {
     dispatch(setChatting({ contactId, isChatting: true }));

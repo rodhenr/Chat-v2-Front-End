@@ -24,14 +24,20 @@ function ChatMessages() {
 
   const lastDay = useRef("");
 
+  const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
   useEffect(() => {
-    socket.on("private message", (data: Message) => {
-      dispatch(newMessage(data));
-    });
-  }, [dispatch]);
+    width < 900 &&
+      socket.on("private message", (data: Message) => {
+        dispatch(newMessage(data));
+      });
+
+    return () => {
+      socket.removeAllListeners();
+    };
+  }, [width, dispatch]);
 
   const months = (m: number) => {
     switch (m) {

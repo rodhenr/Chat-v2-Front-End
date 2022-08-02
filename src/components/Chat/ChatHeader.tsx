@@ -42,7 +42,6 @@ function ChatHeader() {
   useEffect(() => {
     socket.on("users_online", (data: string[] | []) => {
       dispatch(usersConnected(data));
-      console.log("header", data)
     });
 
     socket.on("user_online", (data: string) => {

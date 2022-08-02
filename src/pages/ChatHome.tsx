@@ -24,43 +24,17 @@ import { useMainChatInfoQuery } from "../features/chat/chatApiSlice";
 import styles from "../styles/Chat/ChatHome.module.scss";
 import ChatHeader from "../components/Chat/ChatHeader";
 
-interface Message {
-  createdAt: string;
-  message: string;
-  receiver: string;
-  sender: string;
-}
-
 function ChatHome() {
   const dispatch = useDispatch();
   useMainChatInfoQuery(undefined, { refetchOnMountOrArgChange: true });
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const userId = useSelector((state: RootState) => state.auth.userId);
 
-  // Conexão do WebSocket
+  // Conexão com o websocket
   useEffect(() => {
     socket.auth = { id: userId };
     socket.connect();
   }, [userId]);
-
-  // Eventos do WebSocket
-  useEffect(() => {
-    socket.on("private message", (data: Message) => {
-      dispatch(newMessage(data));
-    });
-
-    socket.on("users_online", (data: string[] | []) => {
-      dispatch(usersConnected(data));
-    });
-
-    socket.on("user_online", (data: string) => {
-      dispatch(addConnection(data));
-    });
-
-    socket.on("user_offline", (data: string) => {
-      dispatch(removeConnection(data));
-    });
-  }, [dispatch]);
 
   // Width da janela
   function getWindowSize() {
