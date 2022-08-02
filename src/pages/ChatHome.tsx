@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeWidth } from "../features/chat/chatSlice";
+import { changeWidth, setMessagesHome } from "../features/chat/chatSlice";
 import { RootState } from "../app/store";
 
 import HomeHeader from "../components/Chat/HomeHeader";
@@ -20,9 +20,21 @@ import ChatHeader from "../components/Chat/ChatHeader";
 
 function ChatHome() {
   const dispatch = useDispatch();
-  useMainChatInfoQuery(undefined, { refetchOnMountOrArgChange: true });
+  const { data, isSuccess } = useMainChatInfoQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const userId = useSelector((state: RootState) => state.auth.userId);
+
+  useEffect(() => {
+    const dataMessages = data?.connections.map((i) => i.message);
+
+    if (dataMessages !== undefined) {
+      dispatch(setMessagesHome(dataMessages));
+    } else {
+      dispatch(setMessagesHome([]));
+    }
+  }, [isSuccess]);
 
   // Conexão com o websocket
   useEffect(() => {

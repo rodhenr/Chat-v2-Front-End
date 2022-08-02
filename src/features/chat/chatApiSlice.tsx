@@ -10,12 +10,7 @@ interface Messages {
 interface DataConnection {
   avatar: string;
   fullName: string;
-  message: {
-    createdAt: string;
-    message: string;
-    receiver: string;
-    sender: string;
-  };
+  message: Messages;
   userId: string;
 }
 

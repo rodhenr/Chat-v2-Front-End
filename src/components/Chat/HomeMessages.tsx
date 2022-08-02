@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import {
   addConnection,
+  addMessagesHome,
   newMessage,
   removeConnection,
   setChatting,
@@ -37,15 +38,19 @@ function HomeMessages() {
 
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
-
+  const storeMessages = useSelector(
+    (state: RootState) => state.chat.messagesHome
+  );
   const connectedUsers = useSelector(
     (state: RootState) => state.chat.connectedUsers
   );
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
   // Eventos do WebSocket
   useEffect(() => {
     socket.on("private message", (data: Message) => {
       dispatch(newMessage(data));
+      dispatch(addMessagesHome(data));
     });
 
     socket.on("users_online", (data: string[] | []) => {
@@ -65,6 +70,16 @@ function HomeMessages() {
       socket.disconnect();
       window.location.reload();
     });
+
+    socket.on("double_connection", () => {
+      dispatch(clearToken());
+      window.location.reload();
+    });
+
+    return () => {
+      socket.off("no_id");
+      socket.off("double_connection");
+    };
 
     return () => {
       socket.removeAllListeners();
@@ -115,6 +130,16 @@ function HomeMessages() {
     }
   };
 
+  const findMessages = (id: string) => {
+    const filterArray = storeMessages.filter(
+      (i) =>
+        (i.sender === id && i.receiver === userId) ||
+        (i.sender === userId && i.receiver === id)
+    );
+
+    return filterArray;
+  };
+
   return data ? (
     <div
       className={
@@ -128,6 +153,7 @@ function HomeMessages() {
       ) : (
         data.connections.map((i, index) => {
           const func: Function = width > 900 ? handleChat : handleNavigate;
+          const contactMessages = findMessages(i.userId);
 
           return (
             <div
@@ -161,12 +187,12 @@ function HomeMessages() {
                   }
                 >
                   <p>{i.fullName}</p>
-                  {i.message.message ? (
+                  {contactMessages.length > 0 ? (
                     <p>
-                      {i.message.sender === data.userId ? `Você:` : ""}{" "}
-                      {i.message.message.length >= 25
-                        ? `${i.message.message.slice(0, 25)}...`
-                        : i.message.message}
+                      {contactMessages[0].sender === data.userId ? `Você:` : ""}{" "}
+                      {contactMessages[0].message.length >= 25
+                        ? `${contactMessages[0].message.slice(0, 25)}...`
+                        : contactMessages[0].message}
                     </p>
                   ) : (
                     <p></p>
@@ -174,8 +200,8 @@ function HomeMessages() {
                 </div>
               </div>
               <div className={styles.messageInfo}>
-                {i.message.message ? (
-                  <p>{messageData(JSON.parse(i.message.createdAt))}</p>
+                {contactMessages.length > 0 ? (
+                  <p>{messageData(JSON.parse(contactMessages[0].createdAt))}</p>
                 ) : (
                   <p></p>
                 )}

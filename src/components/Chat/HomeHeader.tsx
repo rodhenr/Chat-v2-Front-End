@@ -27,8 +27,13 @@ function HomeHeader() {
       handleLogout();
     });
 
+    socket.on("double_connection", () => {
+      dispatch(clearToken());
+    });
+
     return () => {
       socket.off("no_id");
+      socket.off("double_connection");
     };
   }, []);
 
