@@ -2,6 +2,8 @@ import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import {
@@ -10,7 +12,6 @@ import {
   newMessage,
   removeConnection,
   setChatting,
-  setMessagesHome,
   usersConnected,
 } from "../../features/chat/chatSlice";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
@@ -189,7 +190,7 @@ function HomeMessages() {
                   ? `${styles.message} ${styles.active}`
                   : styles.message
               }
-              key={index}
+              key={uuidv4()}
               onClick={() => func(i.userId)}
             >
               <div className={styles.messageUser}>

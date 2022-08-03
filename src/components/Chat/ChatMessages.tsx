@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
+import { v4 as uuidv4 } from "uuid";
+
 import socket from "../../socket";
 
 import { newMessage } from "../../features/chat/chatSlice";
@@ -112,7 +114,7 @@ function ChatMessages() {
         const isLast = storeMessages.length === index + 1;
 
         return (
-          <div className={styles.containerMessage} key={index}>
+          <div className={styles.containerMessage} key={uuidv4()}>
             {date ? (
               <div className={styles.dayMonth}>
                 <p>{date}</p>
