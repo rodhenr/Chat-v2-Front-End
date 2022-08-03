@@ -118,6 +118,13 @@
   }
 }
 
+.infoRight {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
 .messageInfo {
   display: flex;
   justify-content: flex-end;
@@ -126,6 +133,22 @@
   p {
     color: #bbbbbb;
     font-size: 0.95rem;
+    margin: 0;
+  }
+}
+
+.notRead {
+  align-items: center;
+  background-color: rgb(226, 37, 37);
+  border-radius: 50%;
+  display: flex;
+  height: 23px;
+  justify-content: center;
+  width: 23px;
+
+  p {
+    color: #fff;
+    font-size: 0.8rem;
     margin: 0;
   }
 }

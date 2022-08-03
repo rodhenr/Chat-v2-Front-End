@@ -3,6 +3,7 @@ import { apiSlice } from "../../app/api/apiSlice";
 interface Messages {
   createdAt: string;
   message: string;
+  read: boolean;
   receiver: string;
   sender: string;
 }
@@ -11,6 +12,7 @@ interface DataConnection {
   avatar: string;
   fullName: string;
   message: Messages;
+  notRead: number;
   userId: string;
 }
 

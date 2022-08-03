@@ -10,6 +10,7 @@ import {
   newMessage,
   removeConnection,
   setChatting,
+  setMessagesHome,
   usersConnected,
 } from "../../features/chat/chatSlice";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
@@ -21,11 +22,27 @@ import avatar from "../../images/avatar.webp";
 
 import styles from "../../styles/Chat/HomeMessages.module.scss";
 
-interface Message {
+interface Messages {
   createdAt: string;
   message: string;
+  read: boolean;
   receiver: string;
   sender: string;
+}
+
+interface DataConnection {
+  avatar: string;
+  fullName: string;
+  message: Messages;
+  notRead: number;
+  userId: string;
+}
+
+interface DataMain {
+  avatar: string;
+  connections: DataConnection[];
+  fullName: string;
+  userId: string;
 }
 
 function HomeMessages() {
@@ -48,7 +65,7 @@ function HomeMessages() {
 
   // Eventos do WebSocket
   useEffect(() => {
-    socket.on("private message", (data: Message) => {
+    socket.on("private message", (data: Messages) => {
       dispatch(newMessage(data));
       dispatch(addMessagesHome(data));
     });
@@ -77,14 +94,9 @@ function HomeMessages() {
     });
 
     return () => {
-      socket.off("no_id");
-      socket.off("double_connection");
-    };
-
-    return () => {
       socket.removeAllListeners();
     };
-  }, [dispatch]);
+  }, []);
 
   const handleNavigate = (contactId: string) => {
     dispatch(setChatting({ contactId, isChatting: true }));
@@ -131,13 +143,28 @@ function HomeMessages() {
   };
 
   const findMessages = (id: string) => {
-    const filterArray = storeMessages.filter(
-      (i) =>
-        (i.sender === id && i.receiver === userId) ||
-        (i.sender === userId && i.receiver === id)
-    );
+    if (storeMessages.length > 0) {
+      const filterArray = storeMessages.filter(
+        (i) =>
+          (i.sender === id && i.receiver === userId) ||
+          (i.sender === userId && i.receiver === id)
+      );
+      return filterArray;
+    } else {
+      return [];
+    }
+  };
 
-    return filterArray;
+  const sortMessagesData = (data: DataMain) => {
+    const sortedArray = data.connections.slice().sort((a, b) => {
+      return JSON.parse(a.message.createdAt) < JSON.parse(b.message.createdAt)
+        ? 1
+        : JSON.parse(a.message.createdAt) > JSON.parse(b.message.createdAt)
+        ? -1
+        : 0;
+    });
+
+    return sortedArray;
   };
 
   return data ? (
@@ -151,7 +178,7 @@ function HomeMessages() {
       {data.connections.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        data.connections.map((i, index) => {
+        sortMessagesData(data).map((i, index) => {
           const func: Function = width > 900 ? handleChat : handleNavigate;
           const contactMessages = findMessages(i.userId);
 
@@ -199,11 +226,20 @@ function HomeMessages() {
                   )}
                 </div>
               </div>
-              <div className={styles.messageInfo}>
-                {contactMessages.length > 0 ? (
-                  <p>{messageData(JSON.parse(contactMessages[0].createdAt))}</p>
-                ) : (
-                  <p></p>
+              <div className={styles.infoRight}>
+                <div className={styles.messageInfo}>
+                  {contactMessages.length > 0 ? (
+                    <p>
+                      {messageData(JSON.parse(contactMessages[0].createdAt))}
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
+                </div>
+                {i.notRead > 0 && (
+                  <div className={styles.notRead}>
+                    <p>{i.notRead}</p>
+                  </div>
                 )}
               </div>
             </div>

@@ -13,6 +13,7 @@ import styles from "../../styles/Chat/ChatMessages.module.scss";
 interface Message {
   createdAt: string;
   message: string;
+  read: boolean;
   receiver: string;
   sender: string;
 }
@@ -21,6 +22,7 @@ function ChatMessages() {
   const dispatch = useDispatch();
   let params = useParams();
   const contactId = params.contactId!;
+  const last = useRef<HTMLDivElement>(null);
 
   const lastDay = useRef("");
 
@@ -28,6 +30,19 @@ function ChatMessages() {
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
+  // enviar para o servidor que leu as mensagens desse contato
+  useEffect(() => {
+    socket.emit("read_message", cId);
+  }, []);
+
+  // Sempre dar scroll pro fim caso haja um re-render
+  useEffect(() => {
+    if (last.current) {
+      last.current.scrollIntoView({ behavior: "smooth" });
+    }
+  });
+
+  // Se receber nova mensagem
   useEffect(() => {
     width < 900 &&
       socket.on("private message", (data: Message) => {
@@ -94,6 +109,7 @@ function ChatMessages() {
       {storeMessages.map((i, index) => {
         const createdAt = JSON.parse(i.createdAt);
         const date = checkDay(createdAt, index);
+        const isLast = storeMessages.length === index + 1;
 
         return (
           <div className={styles.containerMessage} key={index}>
@@ -118,6 +134,7 @@ function ChatMessages() {
                   : new Date(createdAt).getMinutes()
               }`}</p>
             </div>
+            {isLast ? <div ref={last}></div> : null}
           </div>
         );
       })}

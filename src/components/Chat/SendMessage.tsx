@@ -26,13 +26,14 @@ function SendMessage() {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    
+
     if (message === "") return;
 
     try {
       const newMsg = {
         createdAt: JSON.stringify(new Date()),
         message,
+        read: false,
         receiver: cId,
         sender: userId,
       };

@@ -20,7 +20,7 @@ import ChatHeader from "../components/Chat/ChatHeader";
 
 function ChatHome() {
   const dispatch = useDispatch();
-  const { data, isSuccess } = useMainChatInfoQuery(undefined, {
+  const { data } = useMainChatInfoQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
@@ -29,12 +29,12 @@ function ChatHome() {
   useEffect(() => {
     const dataMessages = data?.connections.map((i) => i.message);
 
-    if (dataMessages !== undefined) {
-      dispatch(setMessagesHome(dataMessages));
-    } else {
+    if (dataMessages === undefined || dataMessages === null) {
       dispatch(setMessagesHome([]));
+    } else {
+      dispatch(setMessagesHome(dataMessages));
     }
-  }, [isSuccess]);
+  }, [data]);
 
   // Conexão com o websocket
   useEffect(() => {
