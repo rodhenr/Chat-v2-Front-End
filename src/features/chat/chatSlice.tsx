@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Message {
+interface Messages {
   createdAt: string;
   message: string;
   read: boolean;
@@ -11,7 +11,7 @@ interface Message {
 interface DataConnection {
   avatar: string;
   fullName: string;
-  message: Message;
+  message: Messages;
   notRead: number;
   userId: string;
 }
@@ -20,7 +20,7 @@ interface State {
   connectedUsers: string[];
   contactId: string;
   isChatting: boolean;
-  messages: Message[];
+  messages: Messages[];
   messagesHome: DataConnection[];
   width: number;
 }
@@ -44,15 +44,25 @@ const chatSlice = createSlice({
         state.connectedUsers.push(action.payload);
       }
     },
-    addMessagesHome: (state, action: PayloadAction<Message>) => {
+    addMessagesHome: (state, action: PayloadAction<Messages>) => {
       const { sender, receiver } = action.payload;
 
       const newMessages = state.messagesHome.map((i) => {
-        if (
-          (i.message.sender === sender && i.message.receiver === receiver) ||
-          (i.message.sender === receiver && i.message.receiver === sender)
-        ) {
-          return {...i, message: action.payload}
+        if (sender === i.userId && sender !== state.contactId) {
+          return { ...i, notRead: i.notRead + 1, message: action.payload };
+        } else if (receiver === i.userId) {
+          return { ...i, message: action.payload };
+        } else {
+          return i;
+        }
+      });
+
+      state.messagesHome = newMessages;
+    },
+    changeMessagesHome: (state, action: PayloadAction<string>) => {
+      const newMessages = state.messagesHome.map((i) => {
+        if (i.userId === action.payload) {
+          return { ...i, notRead: 0, message: { ...i.message, read: true } };
         } else {
           return i;
         }
@@ -64,8 +74,7 @@ const chatSlice = createSlice({
       const width = action.payload;
       state.width = width;
     },
-
-    newMessage: (state, action: PayloadAction<Message>) => {
+    newMessage: (state, action: PayloadAction<Messages>) => {
       state.messages.push(action.payload);
     },
     setChatting: (state, action) => {
@@ -81,7 +90,7 @@ const chatSlice = createSlice({
         );
       }
     },
-    setMessages: (state, action: PayloadAction<Message[] | []>) => {
+    setMessages: (state, action: PayloadAction<Messages[] | []>) => {
       state.messages = action.payload;
     },
     setMessagesHome: (state, action: PayloadAction<DataConnection[] | []>) => {
@@ -96,6 +105,7 @@ const chatSlice = createSlice({
 export const {
   addConnection,
   addMessagesHome,
+  changeMessagesHome,
   changeWidth,
   newMessage,
   removeConnection,

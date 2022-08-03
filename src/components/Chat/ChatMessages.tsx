@@ -7,10 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import socket from "../../socket";
 
-import {
-  newMessage,
-  setMessages,
-} from "../../features/chat/chatSlice";
+import { newMessage, setMessages } from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 import { useChatInfoQuery } from "../../features/chat/chatApiSlice";
@@ -49,17 +46,6 @@ function ChatMessages() {
       last.current.scrollIntoView({ behavior: "smooth" });
     }
   });
-
-  // Se receber nova mensagem
-  useEffect(() => {
-    socket.on("private message", (data: Message) => {
-      dispatch(newMessage(data));
-    });
-
-    return () => {
-      socket.removeAllListeners();
-    };
-  }, [dispatch]);
 
   const months = (m: number) => {
     switch (m) {

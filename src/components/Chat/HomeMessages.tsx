@@ -9,14 +9,13 @@ import { RootState } from "../../app/store";
 import {
   addConnection,
   addMessagesHome,
+  changeMessagesHome,
   newMessage,
   removeConnection,
   setChatting,
   usersConnected,
 } from "../../features/chat/chatSlice";
-import {
-  chatApiSlice,
-} from "../../features/chat/chatApiSlice";
+import { chatApiSlice } from "../../features/chat/chatApiSlice";
 import { clearToken } from "../../features/auth/authSlice";
 
 import socket from "../../socket";
@@ -101,6 +100,7 @@ function HomeMessages() {
 
   const handleChat = (contactId: string) => {
     dispatch(setChatting({ contactId, isChatting: true }));
+    dispatch(changeMessagesHome(contactId));
   };
 
   const messageData = (created: Date) => {
@@ -140,11 +140,22 @@ function HomeMessages() {
 
   const sortMessagesData = (data: DataConnection[]) => {
     const sortedArray = data.slice().sort((a, b) => {
-      return JSON.parse(a.message.createdAt) < JSON.parse(b.message.createdAt)
-        ? 1
-        : JSON.parse(a.message.createdAt) > JSON.parse(b.message.createdAt)
-        ? -1
-        : 0;
+      const itemA: DataConnection | null =
+        Object.keys(a.message).length > 0
+          ? JSON.parse(a.message.createdAt)
+          : null;
+      const itemB: DataConnection | null =
+        Object.keys(b.message).length > 0
+          ? JSON.parse(b.message.createdAt)
+          : null;
+
+      if (!itemA) {
+        return 1;
+      } else if (!itemB) {
+        return -1;
+      } else {
+        return itemA < itemB ? 1 : itemA > itemB ? -1 : 0;
+      }
     });
 
     return sortedArray;
@@ -153,12 +164,10 @@ function HomeMessages() {
   return data ? (
     <div
       className={
-        data.connections.length > 0
-          ? styles.container
-          : styles.containerNoMessage
+        messagesHome.length > 0 ? styles.container : styles.containerNoMessage
       }
     >
-      {data.connections.length === 0 ? (
+      {messagesHome.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
         sortMessagesData(messagesHome).map((i) => {
@@ -196,7 +205,7 @@ function HomeMessages() {
                   }
                 >
                   <p>{i.fullName}</p>
-                  {i.message ? (
+                  {Object.keys(i.message).length > 0 ? (
                     <p>
                       {i.message.sender === userId ? `Você:` : ""}{" "}
                       {i.message.message.length >= 25
@@ -210,7 +219,7 @@ function HomeMessages() {
               </div>
               <div className={styles.infoRight}>
                 <div className={styles.messageInfo}>
-                  {i.message ? (
+                  {Object.keys(i.message).length > 0 ? (
                     <p>{messageData(JSON.parse(i.message.createdAt))}</p>
                   ) : (
                     <p></p>
