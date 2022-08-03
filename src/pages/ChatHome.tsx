@@ -117,7 +117,7 @@ function ChatHome() {
             <HomeMessages />
           </div>
           <div className={`${styles.chat} ${styles.chatNoMessage}`}>
-            <p>Selecione um contato para começar uma conversa</p>
+            <p>Selecione um contato para conversar</p>
           </div>
           <div className={styles.send}></div>
         </>

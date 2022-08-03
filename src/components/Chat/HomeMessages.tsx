@@ -143,6 +143,7 @@ function HomeMessages() {
   };
 
   const sortMessagesData = (data: DataConnection[]) => {
+    console.log(data)
     const sortedArray = data.slice().sort((a, b) => {
       const itemA: DataConnection | null =
         Object.keys(a.message).length > 0

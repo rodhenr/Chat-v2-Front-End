@@ -46,10 +46,7 @@ const chatSlice = createSlice({
         state.connectedUsers.push(action.payload);
       }
     },
-    addMessagesHome: (
-      state,
-      action: PayloadAction<Messages>
-    ) => {
+    addMessagesHome: (state, action: PayloadAction<Messages>) => {
       const { sender } = action.payload;
 
       const newMessages = state.messagesHome.map((i) => {
@@ -69,7 +66,11 @@ const chatSlice = createSlice({
     changeMessagesHome: (state, action: PayloadAction<string>) => {
       const newMessages = state.messagesHome.map((i) => {
         if (i.userId === action.payload) {
-          return { ...i, notRead: 0, message: { ...i.message, read: true } };
+          if (Object.keys(i.message).length > 0) {
+            return { ...i, notRead: 0, message: { ...i.message, read: true } };
+          } else {
+            return i;
+          }
         } else {
           return i;
         }
