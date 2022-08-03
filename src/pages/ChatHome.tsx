@@ -26,6 +26,7 @@ function ChatHome() {
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const userId = useSelector((state: RootState) => state.auth.userId);
 
+  // atualiza as mensagens da store (tela inicial)
   useEffect(() => {
     const dataMessages = data?.connections.map((i) => i.message);
 

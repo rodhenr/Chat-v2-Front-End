@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import { useNavigate } from "react-router";
 
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
@@ -27,9 +26,6 @@ function ChatHeader() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const params = useParams();
-  const contactId = params.contactId!;
-
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const connectedUsers = useSelector(
@@ -53,14 +49,8 @@ function ChatHeader() {
     });
   }, [dispatch]);
 
-  let data;
-
-  width > 900
-    ? (data =
-        chatApiSlice.endpoints.chatInfo.useQueryState(cId).data?.contactInfo)
-    : (data =
-        chatApiSlice.endpoints.chatInfo.useQueryState(contactId).data
-          ?.contactInfo);
+  const data =
+    chatApiSlice.endpoints.chatInfo.useQueryState(cId).data?.contactInfo;
 
   const handleNavigate = () => {
     navigate("/chat");
@@ -80,7 +70,7 @@ function ChatHeader() {
       />
       <div
         className={
-          connectedUsers.some((item) => item === cId || item === contactId)
+          connectedUsers.some((item) => item === cId)
             ? `${styles.avatar} ${styles.online}`
             : styles.avatar
         }

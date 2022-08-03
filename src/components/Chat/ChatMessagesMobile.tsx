@@ -7,10 +7,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import socket from "../../socket";
 
-import { newMessage, setMessages } from "../../features/chat/chatSlice";
+import { newMessage } from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
-import { useChatInfoQuery } from "../../features/chat/chatApiSlice";
 
 interface Message {
   createdAt: string;
@@ -20,21 +19,16 @@ interface Message {
   sender: string;
 }
 
-function ChatMessages() {
+function ChatMessagesMobile() {
   const dispatch = useDispatch();
+  
   const last = useRef<HTMLDivElement>(null);
+
   const lastDay = useRef("");
 
   const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const storeMessages = useSelector((state: RootState) => state.chat.messages);
-
-  const { data } = useChatInfoQuery(cId);
-
-  useEffect(() => {
-    if (data === undefined) return;
-    dispatch(setMessages(data.messages));
-  }, [data, dispatch]);
 
   // enviar para o servidor que leu as mensagens desse contato
   useEffect(() => {
@@ -50,9 +44,10 @@ function ChatMessages() {
 
   // Se receber nova mensagem
   useEffect(() => {
-    socket.on("private message", (data: Message) => {
-      dispatch(newMessage(data));
-    });
+    width < 900 &&
+      socket.on("private message", (data: Message) => {
+        dispatch(newMessage(data));
+      });
 
     return () => {
       socket.removeAllListeners();
@@ -147,4 +142,4 @@ function ChatMessages() {
   );
 }
 
-export default ChatMessages;
+export default ChatMessagesMobile;

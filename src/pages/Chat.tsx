@@ -9,7 +9,7 @@ import { useChatInfoQuery } from "../features/chat/chatApiSlice";
 import socket from "../socket";
 
 import ChatHeader from "../components/Chat/ChatHeader";
-import ChatMessages from "../components/Chat/ChatMessages";
+import ChatMessagesMobile from "../components/Chat/ChatMessagesMobile";
 import SendMessage from "../components/Chat/SendMessage";
 
 import styles from "../styles/Chat/ChatMobile.module.scss";
@@ -46,7 +46,7 @@ function Chat() {
   return (
     <div className={styles.container}>
       <ChatHeader />
-      <ChatMessages />
+      <ChatMessagesMobile />
       <SendMessage />
     </div>
   );
