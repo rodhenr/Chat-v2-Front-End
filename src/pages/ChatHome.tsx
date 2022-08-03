@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeWidth, setMessagesHome } from "../features/chat/chatSlice";
+import {
+  changeWidth,
+  setMessagesHome,
+  setMyId,
+} from "../features/chat/chatSlice";
 import { RootState } from "../app/store";
 
 import HomeHeader from "../components/Chat/HomeHeader";
@@ -25,6 +29,10 @@ function ChatHome() {
   });
   const isChatting = useSelector((state: RootState) => state.chat.isChatting);
   const userId = useSelector((state: RootState) => state.auth.userId);
+
+  useEffect(() => {
+    dispatch(setMyId(userId));
+  }, [userId]);
 
   // atualiza as mensagens da store (tela inicial)
   useEffect(() => {

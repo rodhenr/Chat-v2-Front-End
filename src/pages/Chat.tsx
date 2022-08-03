@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { setChatting, setMessages } from "../features/chat/chatSlice";
+import { setChatting, setMessages, setMyId } from "../features/chat/chatSlice";
 import { useChatInfoQuery } from "../features/chat/chatApiSlice";
 
 import socket from "../socket";
@@ -35,6 +35,7 @@ function Chat() {
   // Atualiza o nome do contato alvo
   useEffect(() => {
     dispatch(setChatting({ contactId, isChatting: false }));
+    dispatch(setMyId(userId));
   }, [dispatch, contactId]);
 
   // Salva as mensagens na store

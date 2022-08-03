@@ -48,11 +48,11 @@ function HomeMessages() {
   const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
-
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const messagesHome = useSelector(
     (state: RootState) => state.chat.messagesHome
   );
+  console.log("store", messagesHome);
   const connectedUsers = useSelector(
     (state: RootState) => state.chat.connectedUsers
   );
@@ -60,10 +60,17 @@ function HomeMessages() {
 
   // Eventos do WebSocket
   useEffect(() => {
-    socket.on("private message", (data: Messages) => {
-      dispatch(newMessage(data));
-      dispatch(addMessagesHome(data));
-    });
+    if (width < 900) {
+      socket.on("private message", (data: Messages) => {
+        dispatch(newMessage(data));
+        dispatch(addMessagesHome({ data, contactId: "" }));
+      });
+    } else {
+      socket.on("private message", (data: Messages) => {
+        dispatch(newMessage(data));
+        dispatch(addMessagesHome({ data, contactId: cId }));
+      });
+    }
 
     socket.on("users_online", (data: string[] | []) => {
       dispatch(usersConnected(data));

@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import socket from "../../socket";
 
-import { newMessage } from "../../features/chat/chatSlice";
+import { changeMessagesHome, newMessage } from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 
@@ -43,6 +43,10 @@ function ChatMessagesMobile() {
   useEffect(() => {
     socket.on("private message", (data: Message) => {
       dispatch(newMessage(data));
+
+      if (data.sender === cId) {
+        socket.emit("read_message", cId);
+      }
     });
 
     return () => {

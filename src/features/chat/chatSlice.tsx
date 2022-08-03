@@ -22,6 +22,7 @@ interface State {
   isChatting: boolean;
   messages: Messages[];
   messagesHome: DataConnection[];
+  myId: string;
   width: number;
 }
 
@@ -31,9 +32,10 @@ const initialState: State = {
   isChatting: false,
   messages: [],
   messagesHome: [],
+  myId: "",
   width: 0,
 };
-
+// só recebe notificação no modo desktop
 const chatSlice = createSlice({
   name: "chat",
   initialState,
@@ -44,14 +46,18 @@ const chatSlice = createSlice({
         state.connectedUsers.push(action.payload);
       }
     },
-    addMessagesHome: (state, action: PayloadAction<Messages>) => {
-      const { sender, receiver } = action.payload;
+    addMessagesHome: (
+      state,
+      action: PayloadAction<{ data: Messages; contactId: string }>
+    ) => {
+      const { data, contactId } = action.payload;
+      const { sender, receiver } = data;
 
       const newMessages = state.messagesHome.map((i) => {
-        if (sender === i.userId && sender !== state.contactId) {
-          return { ...i, notRead: i.notRead + 1, message: action.payload };
+        if (sender === i.userId && sender !== contactId) {
+          return { ...i, notRead: i.notRead + 1, message: data };
         } else if (receiver === i.userId) {
-          return { ...i, message: action.payload };
+          return { ...i, message: data };
         } else {
           return i;
         }
@@ -75,7 +81,23 @@ const chatSlice = createSlice({
       state.width = width;
     },
     newMessage: (state, action: PayloadAction<Messages>) => {
-      state.messages.push(action.payload);
+      const { sender } = action.payload;
+
+      if (sender === state.myId) {
+        state.messages.push(action.payload);
+      } else if (sender !== state.contactId) {
+        const newMessages = state.messagesHome.map((i) => {
+          if (sender === i.userId) {
+            return { ...i, notRead: i.notRead + 1, message: action.payload };
+          } else {
+            return i;
+          }
+        });
+
+        state.messagesHome = newMessages;
+      } else {
+        state.messages.push(action.payload);
+      }
     },
     setChatting: (state, action) => {
       const { contactId, isChatting } = action.payload;
@@ -96,6 +118,9 @@ const chatSlice = createSlice({
     setMessagesHome: (state, action: PayloadAction<DataConnection[] | []>) => {
       state.messagesHome = action.payload;
     },
+    setMyId: (state, action: PayloadAction<string>) => {
+      state.myId = action.payload;
+    },
     usersConnected: (state, action: PayloadAction<string[]>) => {
       state.connectedUsers = action.payload;
     },
@@ -112,6 +137,7 @@ export const {
   setChatting,
   setMessages,
   setMessagesHome,
+  setMyId,
   usersConnected,
 } = chatSlice.actions;
 
