@@ -48,16 +48,17 @@ const chatSlice = createSlice({
     },
     addMessagesHome: (
       state,
-      action: PayloadAction<{ data: Messages; contactId: string }>
+      action: PayloadAction<Messages>
     ) => {
-      const { data, contactId } = action.payload;
-      const { sender, receiver } = data;
+      const { sender } = action.payload;
 
       const newMessages = state.messagesHome.map((i) => {
-        if (sender === i.userId && sender !== contactId) {
-          return { ...i, notRead: i.notRead + 1, message: data };
-        } else if (receiver === i.userId) {
-          return { ...i, message: data };
+        if (sender === i.userId && state.width < 900) {
+          return { ...i, notRead: i.notRead + 1, message: action.payload };
+        } else if (sender === i.userId && i.userId === state.contactId) {
+          return { ...i, message: action.payload };
+        } else if (sender === i.userId && i.userId !== state.contactId) {
+          return { ...i, notRead: i.notRead + 1, message: action.payload };
         } else {
           return i;
         }
@@ -88,7 +89,7 @@ const chatSlice = createSlice({
       } else if (sender !== state.contactId) {
         const newMessages = state.messagesHome.map((i) => {
           if (sender === i.userId) {
-            return { ...i, notRead: i.notRead + 1, message: action.payload };
+            return { ...i, message: action.payload };
           } else {
             return i;
           }
@@ -99,7 +100,10 @@ const chatSlice = createSlice({
         state.messages.push(action.payload);
       }
     },
-    setChatting: (state, action) => {
+    setChatting: (
+      state,
+      action: PayloadAction<{ contactId: string; isChatting: boolean }>
+    ) => {
       const { contactId, isChatting } = action.payload;
       state.contactId = contactId;
       state.isChatting = isChatting;

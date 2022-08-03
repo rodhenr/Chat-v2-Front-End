@@ -73,7 +73,7 @@ function ChatHome() {
 
   useEffect(() => {
     dispatch(changeWidth(windowSize));
-  }, [dispatch, windowSize]);
+  }, [windowSize]);
 
   const mobile = (
     <div className={styles.container}>

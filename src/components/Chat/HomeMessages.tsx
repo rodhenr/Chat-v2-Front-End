@@ -52,7 +52,7 @@ function HomeMessages() {
   const messagesHome = useSelector(
     (state: RootState) => state.chat.messagesHome
   );
-  console.log("store", messagesHome);
+
   const connectedUsers = useSelector(
     (state: RootState) => state.chat.connectedUsers
   );
@@ -60,17 +60,10 @@ function HomeMessages() {
 
   // Eventos do WebSocket
   useEffect(() => {
-    if (width < 900) {
-      socket.on("private message", (data: Messages) => {
-        dispatch(newMessage(data));
-        dispatch(addMessagesHome({ data, contactId: "" }));
-      });
-    } else {
-      socket.on("private message", (data: Messages) => {
-        dispatch(newMessage(data));
-        dispatch(addMessagesHome({ data, contactId: cId }));
-      });
-    }
+    socket.on("private message", (data: Messages) => {
+      dispatch(newMessage(data));
+      dispatch(addMessagesHome(data));
+    });
 
     socket.on("users_online", (data: string[] | []) => {
       dispatch(usersConnected(data));
@@ -99,6 +92,10 @@ function HomeMessages() {
       socket.removeAllListeners();
     };
   }, []);
+
+  useEffect(() => {
+    width < 900 && dispatch(setChatting({ contactId: "", isChatting: false }));
+  }, [width]);
 
   const handleNavigate = (contactId: string) => {
     dispatch(setChatting({ contactId, isChatting: true }));

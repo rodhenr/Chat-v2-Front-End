@@ -43,7 +43,7 @@ function SendMessage() {
       });
 
       dispatch(newMessage(newMsg));
-      dispatch(addMessagesHome({ data: newMsg, contactId: cId }));
+      dispatch(addMessagesHome(newMsg));
       setMessage("");
     } catch (err) {
       console.log(err);

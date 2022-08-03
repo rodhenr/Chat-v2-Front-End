@@ -7,18 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import socket from "../../socket";
 
-import { newMessage, setMessages } from "../../features/chat/chatSlice";
+import { setMessages } from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 import { useChatInfoQuery } from "../../features/chat/chatApiSlice";
-
-interface Message {
-  createdAt: string;
-  message: string;
-  read: boolean;
-  receiver: string;
-  sender: string;
-}
 
 function ChatMessages() {
   const dispatch = useDispatch();
@@ -38,7 +30,7 @@ function ChatMessages() {
   // enviar para o servidor que leu as mensagens desse contato
   useEffect(() => {
     socket.emit("read_message", cId);
-  }, []);
+  }, [storeMessages]);
 
   // Sempre dar scroll pro fim caso haja um re-render
   useEffect(() => {
