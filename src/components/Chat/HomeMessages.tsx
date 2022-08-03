@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
@@ -14,7 +14,9 @@ import {
   setChatting,
   usersConnected,
 } from "../../features/chat/chatSlice";
-import { chatApiSlice } from "../../features/chat/chatApiSlice";
+import {
+  chatApiSlice,
+} from "../../features/chat/chatApiSlice";
 import { clearToken } from "../../features/auth/authSlice";
 
 import socket from "../../socket";
@@ -39,24 +41,17 @@ interface DataConnection {
   userId: string;
 }
 
-interface DataMain {
-  avatar: string;
-  connections: DataConnection[];
-  fullName: string;
-  userId: string;
-}
-
 function HomeMessages() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const width = useSelector((state: RootState) => state.chat.width);
 
   const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
 
-  const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
-  const storeMessages = useSelector(
+  const messagesHome = useSelector(
     (state: RootState) => state.chat.messagesHome
   );
   const connectedUsers = useSelector(
@@ -143,21 +138,8 @@ function HomeMessages() {
     }
   };
 
-  const findMessages = (id: string) => {
-    if (storeMessages.length > 0) {
-      const filterArray = storeMessages.filter(
-        (i) =>
-          (i.sender === id && i.receiver === userId) ||
-          (i.sender === userId && i.receiver === id)
-      );
-      return filterArray;
-    } else {
-      return [];
-    }
-  };
-
-  const sortMessagesData = (data: DataMain) => {
-    const sortedArray = data.connections.slice().sort((a, b) => {
+  const sortMessagesData = (data: DataConnection[]) => {
+    const sortedArray = data.slice().sort((a, b) => {
       return JSON.parse(a.message.createdAt) < JSON.parse(b.message.createdAt)
         ? 1
         : JSON.parse(a.message.createdAt) > JSON.parse(b.message.createdAt)
@@ -179,9 +161,8 @@ function HomeMessages() {
       {data.connections.length === 0 ? (
         <p className={styles.noMessage}>Nenhuma mensagem para exibir</p>
       ) : (
-        sortMessagesData(data).map((i, index) => {
+        sortMessagesData(messagesHome).map((i) => {
           const func: Function = width > 900 ? handleChat : handleNavigate;
-          const contactMessages = findMessages(i.userId);
 
           return (
             <div
@@ -215,12 +196,12 @@ function HomeMessages() {
                   }
                 >
                   <p>{i.fullName}</p>
-                  {contactMessages.length > 0 ? (
+                  {i.message ? (
                     <p>
-                      {contactMessages[0].sender === data.userId ? `Você:` : ""}{" "}
-                      {contactMessages[0].message.length >= 25
-                        ? `${contactMessages[0].message.slice(0, 25)}...`
-                        : contactMessages[0].message}
+                      {i.message.sender === userId ? `Você:` : ""}{" "}
+                      {i.message.message.length >= 25
+                        ? `${i.message.message.slice(0, 25)}...`
+                        : i.message.message}
                     </p>
                   ) : (
                     <p></p>
@@ -229,10 +210,8 @@ function HomeMessages() {
               </div>
               <div className={styles.infoRight}>
                 <div className={styles.messageInfo}>
-                  {contactMessages.length > 0 ? (
-                    <p>
-                      {messageData(JSON.parse(contactMessages[0].createdAt))}
-                    </p>
+                  {i.message ? (
+                    <p>{messageData(JSON.parse(i.message.createdAt))}</p>
                   ) : (
                     <p></p>
                   )}

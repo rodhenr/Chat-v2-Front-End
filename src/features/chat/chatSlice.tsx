@@ -8,12 +8,20 @@ interface Message {
   sender: string;
 }
 
+interface DataConnection {
+  avatar: string;
+  fullName: string;
+  message: Message;
+  notRead: number;
+  userId: string;
+}
+
 interface State {
   connectedUsers: string[];
   contactId: string;
   isChatting: boolean;
   messages: Message[];
-  messagesHome: Message[];
+  messagesHome: DataConnection[];
   width: number;
 }
 
@@ -41,10 +49,10 @@ const chatSlice = createSlice({
 
       const newMessages = state.messagesHome.map((i) => {
         if (
-          (i.sender === sender && i.receiver === receiver) ||
-          (i.sender === receiver && i.receiver === sender)
+          (i.message.sender === sender && i.message.receiver === receiver) ||
+          (i.message.sender === receiver && i.message.receiver === sender)
         ) {
-          return action.payload;
+          return {...i, message: action.payload}
         } else {
           return i;
         }
@@ -76,7 +84,7 @@ const chatSlice = createSlice({
     setMessages: (state, action: PayloadAction<Message[] | []>) => {
       state.messages = action.payload;
     },
-    setMessagesHome: (state, action: PayloadAction<Message[] | []>) => {
+    setMessagesHome: (state, action: PayloadAction<DataConnection[] | []>) => {
       state.messagesHome = action.payload;
     },
     usersConnected: (state, action: PayloadAction<string[]>) => {

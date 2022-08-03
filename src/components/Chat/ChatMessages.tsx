@@ -7,7 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import socket from "../../socket";
 
-import { newMessage, setMessages } from "../../features/chat/chatSlice";
+import {
+  newMessage,
+  setMessages,
+} from "../../features/chat/chatSlice";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 import { useChatInfoQuery } from "../../features/chat/chatApiSlice";
@@ -25,7 +28,6 @@ function ChatMessages() {
   const last = useRef<HTMLDivElement>(null);
   const lastDay = useRef("");
 
-  const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
@@ -57,7 +59,7 @@ function ChatMessages() {
     return () => {
       socket.removeAllListeners();
     };
-  }, [width, dispatch]);
+  }, [dispatch]);
 
   const months = (m: number) => {
     switch (m) {

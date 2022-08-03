@@ -21,12 +21,9 @@ interface Message {
 
 function ChatMessagesMobile() {
   const dispatch = useDispatch();
-  
   const last = useRef<HTMLDivElement>(null);
-
   const lastDay = useRef("");
 
-  const width = useSelector((state: RootState) => state.chat.width);
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
@@ -44,15 +41,14 @@ function ChatMessagesMobile() {
 
   // Se receber nova mensagem
   useEffect(() => {
-    width < 900 &&
-      socket.on("private message", (data: Message) => {
-        dispatch(newMessage(data));
-      });
+    socket.on("private message", (data: Message) => {
+      dispatch(newMessage(data));
+    });
 
     return () => {
       socket.removeAllListeners();
     };
-  }, [width, dispatch]);
+  }, [dispatch]);
 
   const months = (m: number) => {
     switch (m) {

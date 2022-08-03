@@ -5,7 +5,7 @@ import socket from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
-import { newMessage } from "../../features/chat/chatSlice";
+import { addMessagesHome, newMessage } from "../../features/chat/chatSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -43,6 +43,7 @@ function SendMessage() {
       });
 
       dispatch(newMessage(newMsg));
+      dispatch(addMessagesHome(newMsg));
       setMessage("");
     } catch (err) {
       console.log(err);

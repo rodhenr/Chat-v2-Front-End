@@ -28,7 +28,7 @@ function ChatHome() {
 
   // atualiza as mensagens da store (tela inicial)
   useEffect(() => {
-    const dataMessages = data?.connections.map((i) => i.message);
+    const dataMessages = data?.connections;
 
     if (dataMessages === undefined || dataMessages === null) {
       dispatch(setMessagesHome([]));
