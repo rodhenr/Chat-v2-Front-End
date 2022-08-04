@@ -4,8 +4,7 @@ import HasToken from "./layout/HasToken";
 import Auth from "./layout/Auth";
 
 import ChatHome from "./pages/ChatHome";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import HomeAuth from "./pages/HomeAuth";
 import Chat from "./pages/Chat";
 
 function App() {
@@ -13,8 +12,7 @@ function App() {
     <Routes>
       <Route path="/">
         <Route element={<HasToken />}>
-          <Route index element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route index element={<HomeAuth />} />
         </Route>
 
         <Route path="chat" element={<Auth />}>

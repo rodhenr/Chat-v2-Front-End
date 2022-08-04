@@ -17,13 +17,13 @@ import {
 } from "../../features/chat/chatSlice";
 import { chatApiSlice } from "../../features/chat/chatApiSlice";
 import { clearToken } from "../../features/auth/authSlice";
+import { getMessageDate, sortMessagesData } from "../../helpers";
 
 import socket from "../../socket";
 
 import avatar from "../../images/avatar.webp";
 
 import styles from "../../styles/Chat/HomeMessages.module.scss";
-import { getMessageDate, sortMessagesData } from "../../helpers";
 
 interface Messages {
   createdAt: string;
@@ -84,11 +84,11 @@ function HomeMessages() {
     return () => {
       socket.removeAllListeners();
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     width < 900 && dispatch(setChatting({ contactId: "", isChatting: false }));
-  }, [width]);
+  }, [dispatch, width]);
 
   const handleNavigate = (contactId: string) => {
     dispatch(setChatting({ contactId, isChatting: true }));

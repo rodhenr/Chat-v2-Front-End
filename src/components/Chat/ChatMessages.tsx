@@ -31,7 +31,7 @@ function ChatMessages() {
   // enviar para o servidor que leu as mensagens desse contato
   useEffect(() => {
     socket.emit("read_message", cId);
-  }, [storeMessages]);
+  }, [cId]);
 
   // Sempre dar scroll pro fim caso haja um re-render
   useEffect(() => {

@@ -31,7 +31,7 @@ function ChatMessagesMobile() {
   // enviar para o servidor que leu as mensagens desse contato
   useEffect(() => {
     socket.emit("read_message", cId);
-  }, []);
+  }, [cId]);
 
   // Sempre dar scroll pro fim caso haja um re-render
   useEffect(() => {
@@ -53,7 +53,7 @@ function ChatMessagesMobile() {
     return () => {
       socket.removeAllListeners();
     };
-  }, [dispatch]);
+  }, [cId, dispatch]);
 
   const checkDay = (created: Date, index: number) => {
     const newDate = new Date(created);

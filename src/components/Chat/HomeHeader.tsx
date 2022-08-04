@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearToken } from "../../features/auth/authSlice";
 
@@ -8,7 +9,6 @@ import { chatApiSlice } from "../../features/chat/chatApiSlice";
 import avatar from "../../images/avatar_m.png";
 
 import styles from "../../styles/Chat/HomeHeader.module.scss";
-import { useEffect } from "react";
 
 function HomeHeader() {
   const dispatch = useDispatch();
@@ -16,15 +16,15 @@ function HomeHeader() {
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
   const customAvatar = <img src={data?.avatar} alt="User Avatar" />;
 
-  const handleLogout = () => {
+  const memoizedHandleLogout = useCallback(() => {
     dispatch(clearToken());
     socket.disconnect();
-  };
+  }, [dispatch]);
 
   // Proteção para deslogar o usuário
   useEffect(() => {
     socket.on("no_id", () => {
-      handleLogout();
+      memoizedHandleLogout();
     });
 
     socket.on("double_connection", () => {
@@ -35,7 +35,7 @@ function HomeHeader() {
       socket.off("no_id");
       socket.off("double_connection");
     };
-  }, []);
+  }, [dispatch, memoizedHandleLogout]);
 
   return (
     <div className={styles.container}>
@@ -49,7 +49,7 @@ function HomeHeader() {
         </div>
       </div>
       <div className={styles.logout}>
-        <p onClick={() => handleLogout()}>SAIR</p>
+        <p onClick={() => memoizedHandleLogout()}>SAIR</p>
       </div>
     </div>
   );

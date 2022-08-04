@@ -33,7 +33,7 @@ function ChatHome() {
 
   useEffect(() => {
     dispatch(setMyId(userId));
-  }, [userId]);
+  }, [dispatch, userId]);
 
   // atualiza as mensagens da store (tela inicial)
   useEffect(() => {
@@ -52,8 +52,6 @@ function ChatHome() {
     socket.connect();
   }, [userId]);
 
-
-
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   useEffect(() => {
@@ -70,7 +68,7 @@ function ChatHome() {
 
   useEffect(() => {
     dispatch(changeWidth(windowSize));
-  }, [windowSize]);
+  }, [dispatch, windowSize]);
 
   const mobile = (
     <div className={styles.container}>
