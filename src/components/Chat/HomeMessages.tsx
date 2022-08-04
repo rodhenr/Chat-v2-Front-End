@@ -23,6 +23,7 @@ import socket from "../../socket";
 import avatar from "../../images/avatar.webp";
 
 import styles from "../../styles/Chat/HomeMessages.module.scss";
+import { getMessageDate, sortMessagesData } from "../../helpers";
 
 interface Messages {
   createdAt: string;
@@ -30,14 +31,6 @@ interface Messages {
   read: boolean;
   receiver: string;
   sender: string;
-}
-
-interface DataConnection {
-  avatar: string;
-  fullName: string;
-  message: Messages;
-  notRead: number;
-  userId: string;
 }
 
 function HomeMessages() {
@@ -107,65 +100,6 @@ function HomeMessages() {
     dispatch(changeMessagesHome(contactId));
   };
 
-  const messageData = (created: Date) => {
-    const newDate = new Date(created);
-    const dateHours = newDate.getHours();
-    const dateMinutes = newDate.getMinutes();
-    const dateMonth = newDate.getMonth();
-    const dateDay = newDate.getDate();
-    const dateYear = newDate.getFullYear();
-    const date = `${newDate.getDate()}${newDate.getMonth()}`;
-
-    const today = new Date();
-    const todayMonth = today.getMonth();
-    const todayDay = today.getDate();
-    const dateToday = `${today.getDate()}${today.getMonth()}`;
-
-    if (dateToday === date) {
-      if (dateHours < 10 && dateMinutes < 10) {
-        return `0${dateHours}:0${dateMinutes}`;
-      } else if (dateHours < 10) {
-        return `0${dateHours}:${dateMinutes}`;
-      } else if (dateMinutes < 10) {
-        return `${dateHours}:0${dateMinutes}`;
-      } else {
-        return `${dateHours}:${dateMinutes}`;
-      }
-    } else if (todayMonth === dateMonth && todayDay - 1 === dateDay) {
-      return "Ontem";
-    } else if (todayMonth - 1 === dateMonth && todayDay - 1 === 0) {
-      return "Ontem";
-    } else if (todayMonth - 1 === -1 && todayDay - 1 === 0) {
-      return "Ontem";
-    } else {
-      return `${dateDay}/${dateMonth + 1}/${dateYear}`;
-    }
-  };
-
-  const sortMessagesData = (data: DataConnection[]) => {
-    console.log(data)
-    const sortedArray = data.slice().sort((a, b) => {
-      const itemA: DataConnection | null =
-        Object.keys(a.message).length > 0
-          ? JSON.parse(a.message.createdAt)
-          : null;
-      const itemB: DataConnection | null =
-        Object.keys(b.message).length > 0
-          ? JSON.parse(b.message.createdAt)
-          : null;
-
-      if (!itemA) {
-        return 1;
-      } else if (!itemB) {
-        return -1;
-      } else {
-        return itemA < itemB ? 1 : itemA > itemB ? -1 : 0;
-      }
-    });
-
-    return sortedArray;
-  };
-
   return data ? (
     <div
       className={
@@ -225,7 +159,7 @@ function HomeMessages() {
               <div className={styles.infoRight}>
                 <div className={styles.messageInfo}>
                   {Object.keys(i.message).length > 0 ? (
-                    <p>{messageData(JSON.parse(i.message.createdAt))}</p>
+                    <p>{getMessageDate(JSON.parse(i.message.createdAt))}</p>
                   ) : (
                     <p></p>
                   )}

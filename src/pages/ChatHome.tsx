@@ -21,6 +21,7 @@ import { useMainChatInfoQuery } from "../features/chat/chatApiSlice";
 
 import styles from "../styles/Chat/ChatHome.module.scss";
 import ChatHeader from "../components/Chat/ChatHeader";
+import { getWindowSize } from "../helpers";
 
 function ChatHome() {
   const dispatch = useDispatch();
@@ -51,11 +52,7 @@ function ChatHome() {
     socket.connect();
   }, [userId]);
 
-  // Width da janela
-  function getWindowSize() {
-    const width = window.innerWidth;
-    return width;
-  }
+
 
   const [windowSize, setWindowSize] = useState(getWindowSize());
 

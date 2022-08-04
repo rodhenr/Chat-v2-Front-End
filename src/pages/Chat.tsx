@@ -36,13 +36,13 @@ function Chat() {
   useEffect(() => {
     dispatch(setChatting({ contactId, isChatting: false }));
     dispatch(setMyId(userId));
-  }, [dispatch, contactId]);
+  }, [contactId]);
 
   // Salva as mensagens na store
   useEffect(() => {
     if (data === undefined) return;
     dispatch(setMessages(data.messages));
-  }, [data, dispatch]);
+  }, [data]);
 
   return (
     <div className={styles.container}>

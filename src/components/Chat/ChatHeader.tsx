@@ -31,12 +31,16 @@ function ChatHeader() {
   const connectedUsers = useSelector(
     (state: RootState) => state.chat.connectedUsers
   );
+  const data =
+    chatApiSlice.endpoints.chatInfo.useQueryState(cId).data?.contactInfo;
 
   const baseAvatar = <img src={avatar} alt="User Avatar" />;
 
   // Eventos do WebSocket
   useEffect(() => {
     socket.on("users_online", (data: string[] | []) => {
+      //clearTimeout(timeoutLogout)
+      //dispatch(addConnection(data));
       dispatch(usersConnected(data));
     });
 
@@ -45,12 +49,11 @@ function ChatHeader() {
     });
 
     socket.on("user_offline", (data: string) => {
+      //const timeoutLogout= dispatch(removeConnection(data))
+      //setTimeout(timeoutLogout(), 5000)
       dispatch(removeConnection(data));
     });
   }, [dispatch]);
-
-  const data =
-    chatApiSlice.endpoints.chatInfo.useQueryState(cId).data?.contactInfo;
 
   const handleNavigate = () => {
     navigate("/chat");

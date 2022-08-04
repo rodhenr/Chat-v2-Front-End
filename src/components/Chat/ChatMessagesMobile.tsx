@@ -7,7 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import socket from "../../socket";
 
-import { changeMessagesHome, newMessage } from "../../features/chat/chatSlice";
+import { newMessage } from "../../features/chat/chatSlice";
+import { checkMonth } from "../../helpers";
 
 import styles from "../../styles/Chat/ChatMessages.module.scss";
 
@@ -54,38 +55,9 @@ function ChatMessagesMobile() {
     };
   }, [dispatch]);
 
-  const months = (m: number) => {
-    switch (m) {
-      case 0:
-        return "Janeiro";
-      case 1:
-        return "Fevereiro";
-      case 2:
-        return "Março";
-      case 3:
-        return "Abril";
-      case 4:
-        return "Maio";
-      case 5:
-        return "Junho";
-      case 6:
-        return "Julho";
-      case 7:
-        return "Agosto";
-      case 8:
-        return "Setembro";
-      case 9:
-        return "Outubro";
-      case 10:
-        return "Novembro";
-      case 11:
-        return "Dezembro";
-    }
-  };
-
   const checkDay = (created: Date, index: number) => {
     const newDate = new Date(created);
-    const date = `${newDate.getDate()} de ${months(newDate.getMonth())}`;
+    const date = `${newDate.getDate()} de ${checkMonth(newDate.getMonth())}`;
 
     // Se for o último item do array, limpa o ref.current para o próximo render
     if (index + 1 === storeMessages.length) {

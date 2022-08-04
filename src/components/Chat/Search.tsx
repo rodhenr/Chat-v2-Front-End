@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
 import { useAddUserMutation } from "../../features/chat/chatApiSlice";
 import styles from "../../styles/Chat/Search.module.scss";
 
