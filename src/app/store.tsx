@@ -3,8 +3,6 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
 import authSlice from "../features/auth/authSlice";
 import chatSlice from "../features/chat/chatSlice";
-import loginSlice from "../features/auth/loginSlice";
-import registerSlice from "../features/auth/registerSlice";
 
 import {
   persistReducer,
@@ -21,8 +19,6 @@ const appReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authSlice,
   chat: chatSlice,
-  login: loginSlice,
-  register: registerSlice,
 });
 
 const persistConfig = {
