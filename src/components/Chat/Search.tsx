@@ -1,3 +1,5 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
 import { useAddUserMutation } from "../../features/chat/chatApiSlice";
@@ -44,6 +46,9 @@ function Search() {
           handleSearch(e);
         }}
       />
+      <button className={styles.searchButton}>
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+      </button>
     </div>
   );
 }

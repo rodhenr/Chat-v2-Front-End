@@ -50,6 +50,30 @@ function SendMessage() {
     }
   };
 
+  const handleKeySubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (message === "" || e.key !== "Enter") return;
+
+    try {
+      const newMsg = {
+        createdAt: JSON.stringify(new Date()),
+        message,
+        read: false,
+        receiver: cId,
+        sender: userId,
+      };
+
+      socket.emit("private message", {
+        newMessage: newMsg,
+      });
+
+      dispatch(newMessage(newMsg));
+      dispatch(addMessagesHome(newMsg));
+      setMessage("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <input
@@ -58,6 +82,7 @@ function SendMessage() {
         placeholder="Digite a sua mensagem..."
         value={message}
         onChange={(e) => handleInput(e)}
+        onKeyDown={(e) => handleKeySubmit(e)}
       />
       <button
         type="button"

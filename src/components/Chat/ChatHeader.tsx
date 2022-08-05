@@ -64,20 +64,20 @@ function ChatHeader() {
   };
 
   const mobile = (
-    <div className={styles.container}>
+    <div
+      className={
+        connectedUsers.some((item) => item === cId)
+          ? `${styles.container} ${styles.online}`
+          : styles.container
+      }
+    >
       <FontAwesomeIcon
         icon={faArrowLeft}
         onClick={() => {
           handleNavigate();
         }}
       />
-      <div
-        className={
-          connectedUsers.some((item) => item === cId)
-            ? `${styles.avatar} ${styles.online}`
-            : styles.avatar
-        }
-      >
+      <div className={styles.avatar}>
         {data?.avatar === "" ? (
           baseAvatar
         ) : (

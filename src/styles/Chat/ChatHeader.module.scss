@@ -1,26 +1,15 @@
 .container {
   align-items: center;
-  background-color: #96d6ee;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  background-color: #bbb;
   box-sizing: border-box;
   display: flex;
   gap: 0.8rem;
   padding-left: 1rem;
 
   svg {
-    color: #2bae66;
+    color: #fff;
     cursor: pointer;
     font-size: 1.3rem;
-  }
-
-  @media (min-width: 600px) {
-    border: 1px solid rgba(0, 0, 0, 0.35);
-    margin: 0 auto;
-    width: calc(100vw - 100px);
-  }
-
-  @media (min-width: 750px) {
-    width: calc(100vw - 200px);
   }
 
   @media (min-width: 900px) {
@@ -31,23 +20,20 @@
   }
 }
 
+.container.online {
+  background-color: #2bae66;
+}
+
 .avatar {
   border-radius: 50%;
   height: 60px;
   width: 60px;
 
   img {
-    border: 2px solid #bbbbbb;
     border-radius: 50%;
     box-sizing: border-box;
     height: 60px;
     width: 60px;
-  }
-}
-
-.online {
-  img {
-    border: 2px solid #2bae66;
   }
 }
 

@@ -1,17 +1,17 @@
 .container {
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   display: grid;
-  gap: 0.2rem;
   grid-template-columns: 1fr 45px;
-  margin-top: 0.5rem;
-  max-width: 500px;
-  padding: 1rem 0 0;
 
   input {
-    background-color: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: #F8F8F8;
+    border: none;
+    color: rgb(0, 0, 0, 0.4);
     padding: 0 0.5rem;
-    z-index: 1000;
+
+    &::placeholder {
+      color: rgb(0, 0, 0, 0.4);
+    }
 
     &:focus {
       outline: none;
@@ -33,16 +33,13 @@
 }
 
 .searchButton {
-  background-color: #2bae66;
+  background-color: #F8F8F8;
   border: none;
-  border-radius: 0 5px 5px 0;
   color: #fff;
 
   svg {
     font-size: 1rem;
-  }
-
-  @media (min-width: 900px) {
-    display: none;
+    color: #2bae66;
+    cursor: pointer;
   }
 }

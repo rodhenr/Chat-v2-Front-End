@@ -241,11 +241,11 @@ function Login() {
             isLogin === null
               ? styles.column
               : isLogin
-              ? `${styles.column} ${styles.activeRegister}`
-              : `${styles.column} ${styles.activeLogin}`
+              ? `${styles.column} ${styles.activeLogin}`
+              : `${styles.column} ${styles.activeRegister}`
           }
         >
-          {isLogin ? (
+          {isLogin || isLogin === null ? (
             <p>CONECTE-SE COM OS SEUS AMIGOS!</p>
           ) : (
             <p>REGISTRE-SE AGORA E COMEÇE A CONVERSAR!</p>
