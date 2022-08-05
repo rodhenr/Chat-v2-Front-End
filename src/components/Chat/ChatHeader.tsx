@@ -18,8 +18,6 @@ import socket from "../../socket";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-import avatar from "../../images/avatar_m.png";
-
 import styles from "../../styles/Chat/ChatHeader.module.scss";
 
 function ChatHeader() {
@@ -34,13 +32,10 @@ function ChatHeader() {
   const data =
     chatApiSlice.endpoints.chatInfo.useQueryState(cId).data?.contactInfo;
 
-  const baseAvatar = <img src={avatar} alt="User Avatar" />;
-
+    console.log(data)
   // Eventos do WebSocket
   useEffect(() => {
     socket.on("users_online", (data: string[] | []) => {
-      //clearTimeout(timeoutLogout)
-      //dispatch(addConnection(data));
       dispatch(usersConnected(data));
     });
 
@@ -49,8 +44,6 @@ function ChatHeader() {
     });
 
     socket.on("user_offline", (data: string) => {
-      //const timeoutLogout= dispatch(removeConnection(data))
-      //setTimeout(timeoutLogout(), 5000)
       dispatch(removeConnection(data));
     });
   }, [dispatch]);
@@ -78,11 +71,7 @@ function ChatHeader() {
         }}
       />
       <div className={styles.avatar}>
-        {data?.avatar === "" ? (
-          baseAvatar
-        ) : (
-          <img src={data?.avatar} alt="User avatar" />
-        )}
+        <img src={data?.avatar} alt="User avatar" />
       </div>
       <div className={styles.info}>
         <p className={styles.infoName}>{data?.fullName}</p>
@@ -106,11 +95,7 @@ function ChatHeader() {
             : styles.avatar
         }
       >
-        {data?.avatar === "" ? (
-          baseAvatar
-        ) : (
-          <img src={data?.avatar} alt="User avatar" />
-        )}
+        <img src={data?.avatar} alt="User avatar" />
       </div>
       <div className={styles.info}>
         <p className={styles.infoName}>{data?.fullName}</p>

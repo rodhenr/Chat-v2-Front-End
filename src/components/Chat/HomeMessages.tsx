@@ -21,8 +21,6 @@ import { getMessageDate, sortMessagesData } from "../../helpers";
 
 import socket from "../../socket";
 
-import avatar from "../../images/avatar.webp";
-
 import styles from "../../styles/Chat/HomeMessages.module.scss";
 
 interface Messages {
@@ -40,7 +38,6 @@ function HomeMessages() {
 
   const data = chatApiSlice.endpoints.mainChatInfo.useQueryState().data;
 
-  const baseAvatar = <img src={avatar} alt="User Avatar" />;
   const cId = useSelector((state: RootState) => state.chat.contactId);
   const messagesHome = useSelector(
     (state: RootState) => state.chat.messagesHome
@@ -130,11 +127,7 @@ function HomeMessages() {
                       : styles.userAvatar
                   }
                 >
-                  {i.avatar !== "" ? (
-                    <img src={i.avatar} alt="User Avatar" />
-                  ) : (
-                    baseAvatar
-                  )}
+                  <img src={i.avatar} alt="User Avatar" />
                 </div>
                 <div
                   className={

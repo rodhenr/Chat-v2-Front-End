@@ -106,6 +106,7 @@ function Login() {
         password: "",
         confirmPassword: "",
       });
+      setIsLogin(true);
     } catch (err) {
       const error = err as ErrorType; // Necessário criar uma interface para lidar com o erro
       setRegisterError(error.data.error[0]);
