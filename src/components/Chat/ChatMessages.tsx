@@ -19,9 +19,10 @@ function ChatMessages() {
   const lastDay = useRef("");
 
   const cId = useSelector((state: RootState) => state.chat.contactId);
-  const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
   const { data } = useChatInfoQuery(cId);
+
+  const storeMessages = useSelector((state: RootState) => state.chat.messages);
 
   useEffect(() => {
     if (data === undefined) return;
@@ -61,7 +62,7 @@ function ChatMessages() {
     return date;
   };
 
-  return (
+  return data ? (
     <div className={styles.container}>
       {storeMessages.map((i, index) => {
         const createdAt = JSON.parse(i.createdAt);
@@ -96,6 +97,8 @@ function ChatMessages() {
         );
       })}
     </div>
+  ) : (
+    <div className={styles.loadingMessages}>Carregando...</div>
   );
 }
 

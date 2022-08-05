@@ -99,7 +99,13 @@ function ChatHeader() {
           handleClose();
         }}
       />
-      <div className={styles.avatar}>
+      <div
+        className={
+          connectedUsers.some((item) => item === cId)
+            ? `${styles.avatar} ${styles.userOnline}`
+            : styles.avatar
+        }
+      >
         {data?.avatar === "" ? (
           baseAvatar
         ) : (

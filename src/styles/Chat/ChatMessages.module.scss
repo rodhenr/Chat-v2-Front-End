@@ -24,6 +24,14 @@
   }
 }
 
+.loadingMessages {
+  align-items: center;
+  display: flex;
+  font-size: 1.6rem;
+  height: 100%;
+  justify-content: center;
+}
+
 .containerMessage {
   display: flex;
   flex-direction: column;

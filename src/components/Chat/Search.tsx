@@ -13,10 +13,33 @@ function Search() {
     setSearch(e.target.value);
   };
 
-  const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (search.length < 6) return;
+  const handleSearch = async () => {
+    if (search.length < 6) {
+      alert("O campo ID deve conter 6 dígitos");
+      return;
+    }
 
+    try {
+      const add = await addUser(search);
+
+      if (add.hasOwnProperty("error")) {
+        alert("Usuário não encontrado!");
+      } else {
+        alert("Usuário adicionado com sucesso!");
+      }
+      setSearch("");
+    } catch (err) {
+      alert("Ocorreu um erro no servidor...");
+    }
+  };
+
+  const handleSearchKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      if (search.length < 6) {
+        alert("O campo ID deve conter 6 dígitos");
+        return;
+      }
+
       try {
         const add = await addUser(search);
 
@@ -43,10 +66,15 @@ function Search() {
           handleInput(e);
         }}
         onKeyDown={(e) => {
-          handleSearch(e);
+          handleSearchKey(e);
         }}
       />
-      <button className={styles.searchButton}>
+      <button
+        className={styles.searchButton}
+        onClick={() => {
+          handleSearch();
+        }}
+      >
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </button>
     </div>
