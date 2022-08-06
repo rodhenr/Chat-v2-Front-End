@@ -18,8 +18,14 @@ Para este projeto foram utilizadas as seguintes tecnologias:
 
 - [Node](https://nodejs.org/en/)
 - [Express](https://expressjs.com/pt-br/)
-- [WS](https://www.npmjs.com/package/ws)
-- [Nodemon](https://nodemon.io/)
+- [Mongoose](https://mongoosejs.com/docs/queries.html)
+- [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- [JWT](https://jwt.io/)
+- [NanoID](https://www.npmjs.com/package/nanoid)
+- [Cookie-Parser](https://www.npmjs.com/package/cookie-parser)
+- [Cors](https://www.npmjs.com/package/cors)
+- [Express-Validator](https://www.npmjs.com/package/express-validator)
+- [Dotenv](https://www.npmjs.com/package/dotenv)
 
 ## :dvd: Como replicar este projeto
 
@@ -44,6 +50,8 @@ Para replicar esse projeto no seu computador siga os passos abaixo:
 1. Execute o comando npm i para instalar as dependências do projeto
 2. Execute o comando npm run dev para rodar o servidor localmente na porta 8080
 ```
+
+OBS: Arquivos .env podem possuir informações sensíveis e caso você queira subir seu projeto para o github é aconselhável que o .env seja acrescentado no seu arquivo .gitignore
 
 ## :grin: Dúvidas ou sugestões?
 
