@@ -51,8 +51,6 @@ function Login() {
     };
   }, []);
 
-  // criar um erro pro login e um erro pro register
-  // limpar erros ao mudar de tela
   const handleInputLogin = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginError("");
     setLoginInfo((prev) => ({

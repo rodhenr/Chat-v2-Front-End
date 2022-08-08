@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 import { Provider } from "react-redux";
 import { store } from "./app/store";
@@ -18,15 +18,17 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
+  <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route path="*" element={<App />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </PersistGate>
     </Provider>
+  </React.StrictMode>
 );
 
 reportWebVitals();

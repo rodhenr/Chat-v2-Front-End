@@ -8,7 +8,7 @@ import { setToken, clearToken } from "../../features/auth/authSlice";
 import type { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080/",
+  baseUrl: "https://backend-chat-v2.herokuapp.com/",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
