@@ -2,6 +2,8 @@
 
 Um chat feito utilizando a tecnologia de WebSockets, onde é possível no mesmo se cadastrar e conversar com outros usuários.
 
+Versão demo: [AQUI](https://rodhenr.github.io/Chat-v2-Front-End/)
+
 ## :man_technologist: Tecnologias
 
 Para este projeto foram utilizadas as seguintes tecnologias:
