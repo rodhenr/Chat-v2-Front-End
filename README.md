@@ -55,7 +55,7 @@ OBS: Arquivos .env podem possuir informações sensíveis e caso você queira su
 
 ## :computer: Live Demo
 
-Para visualização de uma versão demo do site clique [aqui](https://rodhenr.github.io/Chat-v2-Front-End/).
+Para visualização de uma versão demo da aplicação clique [aqui](https://rodhenr.github.io/Chat-v2-Front-End/).
 
 ## :grin: Dúvidas ou sugestões?
 
